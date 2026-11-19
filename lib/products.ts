@@ -37,7 +37,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "Hi-cover cushion for combination skin, with a dual-sided puff.",
     featuredPack: "cushion-front.webp",
     details: [
-      { label: "Price · Size", body: "IDR 189.000 · 13 gr" },
+      { label: "Size", body: "13 gr" },
       {
         label: "Why it works",
         body: "A lightweight texture that blurs imperfections and evens out skin tone. Metagram Tech combines oil control with water infusion. #PearlfectCoverage",
@@ -56,7 +56,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "The first high-cover concealer with a pearl finish that fights acne bacteria.",
     featuredPack: "pearlfect-cover-silk-fit-concealer-n1.webp",
     details: [
-      { label: "Price · Size", body: "IDR 159.000 · 6.8 gr" },
+      { label: "Size", body: "6.8 gr" },
       {
         label: "Why it works",
         body: "High cover with a pearl finish that fights acne-causing bacteria, made for combination skin. #PearlfectCoverage",
@@ -75,7 +75,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "8-hour pearlfect cover tint meets oil control.",
     featuredPack: "skin-tint.webp",
     details: [
-      { label: "Price · Size", body: "IDR 189.000 · 23 ml" },
+      { label: "Size", body: "23 ml" },
       {
         label: "Why it works",
         body: "Minimal oxidation and UV protection. Enriched with Centella Asiatica, Squalane and Ceramide to support the skin barrier. Suitable for all skin types.",
@@ -94,7 +94,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "A glow-glass finish blush with primer-like tech that lasts.",
     featuredPack: "glass-blush-packshot.webp",
     details: [
-      { label: "Price · Size", body: "IDR 159.000 · 5 ml" },
+      { label: "Size", body: "5 ml" },
       {
         label: "Why it works",
         body: "Adds a natural flush to cheeks or anywhere you want to highlight, with a luminous glass finish. Dermatology tested.",
@@ -113,7 +113,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "The first lip oil to cover dark and chapped lips with a glossy finish.",
     featuredPack: "glass-oil-v2-transparent-rr.webp",
     details: [
-      { label: "Price · Size", body: "IDR 149.000 · 3.4 ml" },
+      { label: "Size", body: "3.4 ml" },
       {
         label: "Why it works",
         body: "Non-sticky, weightless lip oil that hydrates and heals, with a luminous glass finish. Made with Vitamin E, Vitamin C, Ceramide, Shea Butter and Cocoa Butter.",
@@ -132,7 +132,7 @@ const defs: Omit<Product, "kv" | "pack">[] = [
     tagline: "A glassy gloss balm with a 6-hour soft stain and Cera-shine Tech.",
     featuredPack: "glasstick-marry-me.webp",
     details: [
-      { label: "Price · Size", body: "IDR 139.000 · 4 gr" },
+      { label: "Size", body: "4 gr" },
       {
         label: "Why it works",
         body: "Cera-shine Tech traps pigment and moisture under a glassy top layer for non-sticky, soft-pigmented lips. Enriched with 3x Ceramide, Shea Butter and Jojoba for up to 6 hours of nourishment.",
@@ -200,12 +200,16 @@ function blushPack(): Img[] {
   return [...generic, ...shades];
 }
 
-export const products: Product[] = defs.map((d) => ({
+// Sashfir campaign leads the list; numbering follows display order.
+const ordered = [...defs].sort((a, b) => Number(b.slug === "sashfir") - Number(a.slug === "sashfir"));
+
+export const products: Product[] = ordered.map((d, i) => ({
   ...d,
+  number: String(i + 1).padStart(2, "0"),
   kv: toImgs(d.slug, "kv", d.name),
   pack: d.slug === "glass-blush" ? blushPack() : toImgs(d.slug, "pack", d.name),
 }));
 
 export const HERO_IMAGE = products.find((p) => p.slug === "glasstick")!.kv.find((i) => i.src.includes("bride-moge-kv-1-img-9904")) ?? products[0].kv[0];
-export const EMAIL = "im@madformakeup.co";
+export const EMAIL = "mad.natasya@gmail.com";
 export const INSTAGRAM = "https://instagram.com/madformakeup.co";
