@@ -32,15 +32,7 @@ export default function Home() {
         {/* 01 Hero */}
         <section className="relative grid min-h-screen md:grid-cols-2">
           <div className="flex flex-col justify-end px-5 pb-16 pt-32 md:px-10">
-            <p className="label">01 · Partnerships</p>
-            <h1 className="display mt-6 text-6xl md:text-8xl">
-              Mad for makeup.
-              <br />
-              Made for <em>partnership.</em>
-            </h1>
-            <p className="mt-8 max-w-md text-lg text-silver-500">
-              Explore the brand, the lineup and the ways we work with big brands and creators.
-            </p>
+            <h1 className="display text-6xl md:text-8xl">Mad for makeup.</h1>
             <a href="#about" className="label mt-10 hover:text-maroon">
               Find out more ↓
             </a>
@@ -61,8 +53,7 @@ export default function Home() {
         <section id="about" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
           <div className="mx-auto grid max-w-7xl gap-12 px-5 md:grid-cols-[1fr_1.4fr] md:px-10">
             <Reveal>
-              <p className="label">02 · The brand</p>
-              <h2 className="display mt-4 text-5xl md:text-7xl">
+              <h2 className="display text-5xl md:text-7xl">
                 Bold, minimal, <em>unapologetically</em> makeup.
               </h2>
             </Reveal>
@@ -80,9 +71,7 @@ export default function Home() {
                 <p>
                   We&apos;re here to challenge beauty norms, make makeup more inclusive, and encourage everyone to
                   express themselves unapologetically.
-                </p>
-                <p className="label !text-ink">Acne-safe · Inclusive · Unapologetic</p>
-              </div>
+                </p>              </div>
             </Reveal>
           </div>
         </section>
@@ -91,8 +80,7 @@ export default function Home() {
         <section id="products" className="scroll-mt-16 pt-24 md:pt-32">
           <div className="mx-auto max-w-7xl px-5 pb-16 md:px-10">
             <Reveal>
-              <p className="label">03 · Products</p>
-              <h2 className="display mt-4 text-5xl md:text-7xl">
+              <h2 className="display text-5xl md:text-7xl">
                 The <em>lineup.</em>
               </h2>
             </Reveal>
@@ -106,8 +94,7 @@ export default function Home() {
         <section id="engagement" className="scroll-mt-16 bg-ink py-24 text-white md:py-32">
           <div className="mx-auto max-w-7xl px-5 md:px-10">
             <Reveal>
-              <p className="label">04 · Engagement</p>
-              <h2 className="display mt-4 text-5xl md:text-7xl">
+              <h2 className="display text-5xl md:text-7xl">
                 Ways to <em className="!text-silver-300">work together.</em>
               </h2>
             </Reveal>
@@ -133,8 +120,7 @@ export default function Home() {
         <section id="collab" className="scroll-mt-16 py-24 md:py-32">
           <div className="mx-auto grid max-w-7xl gap-16 px-5 md:grid-cols-[1fr_1.1fr] md:px-10">
             <Reveal>
-              <p className="label">05 · Let&apos;s collaborate</p>
-              <h2 className="display mt-4 text-5xl md:text-7xl">
+              <h2 className="display text-5xl md:text-7xl">
                 Let&apos;s work <em>together.</em>
               </h2>
               <p className="mt-6 max-w-md text-lg text-silver-500">
@@ -155,7 +141,8 @@ export default function Home() {
       {/* 06 Footer */}
       <footer className="border-t border-silver-300 px-5 py-10 md:px-10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
-          <p className="display text-2xl">Mad For Makeup</p>
+          {/* Logo asset is white: brightness-0 turns it black on the light footer. */}
+          <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto brightness-0 md:h-5" />
           <nav aria-label="Social" className="flex gap-6">
             <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
               Instagram @madformakeup.co

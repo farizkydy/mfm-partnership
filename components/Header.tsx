@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const links = [
@@ -27,8 +28,9 @@ export default function Header() {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-4 mix-blend-difference text-white md:px-10">
-        <a href="#top" className="display text-xl" aria-label="Mad For Makeup, back to top">
-          Mad For Makeup
+        <a href="#top" aria-label="Mad For Makeup, back to top">
+          {/* White logo + the header's mix-blend-difference keeps it visible on any background. */}
+          <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} priority className="h-4 w-auto md:h-5" />
         </a>
         <button
           onClick={() => setOpen((o) => !o)}
@@ -52,14 +54,13 @@ export default function Header() {
             transition={{ duration: 0.3 }}
           >
             <ul className="space-y-2">
-              {links.map((l, i) => (
+              {links.map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className="display flex items-baseline gap-4 text-5xl hover:italic md:text-7xl"
                   >
-                    <span className="label !text-silver-500">0{i + 2}</span>
                     {l.label}
                   </a>
                 </li>

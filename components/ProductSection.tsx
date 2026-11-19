@@ -18,10 +18,7 @@ export default function ProductSection({ product }: { product: Product }) {
         <Reveal>
           <div className="grid gap-8 md:grid-cols-[1fr_1.2fr] md:gap-16">
             <div>
-              <p className="label">
-                {product.number} · {product.category}
-              </p>
-              <h3 id={`${product.slug}-title`} className="display mt-4 text-5xl md:text-7xl">
+              <h3 id={`${product.slug}-title`} className="display text-5xl md:text-7xl">
                 {product.name}
               </h3>
               <p className="mt-6 max-w-md text-lg text-silver-500">{product.tagline}</p>
