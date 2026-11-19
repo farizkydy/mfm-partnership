@@ -75,7 +75,7 @@ export default function ProductGrid() {
       </Reveal>
 
       {/* Supporting spread */}
-      <ul className="mt-24 grid gap-y-16 md:mt-32 md:grid-cols-12 md:gap-x-6 md:gap-y-24">
+      <ul className="mt-24 grid gap-y-16 md:mt-24 md:grid-cols-12 md:gap-x-6 md:gap-y-16">
         {rest.map((p, i) => {
           const slot = pattern[i % pattern.length];
           return (

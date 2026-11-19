@@ -85,6 +85,16 @@ export const steps = [
 export const contact = {
   headline: "Have something in mind?",
   accent: "Let's make it happen.",
+  formLabel: "Partnership inquiry form",
+  formIntro: "Use this form to send us your proposal. Share a few details and our team will review it.",
+  formNote: "Fields marked optional can be skipped.",
+  includeTitle: "What to include",
+  include: [
+    "Who you are: your brand, agency or creator profile",
+    "The collaboration you have in mind and what you hope to achieve",
+    "Your country or market, and a timeline if you have one",
+    "Links to your website, social media or portfolio",
+  ],
 };
 
 export const footer = {

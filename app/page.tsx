@@ -106,7 +106,7 @@ export default function Home() {
         </section>
 
         {/* About: editorial spread with pull quote */}
-        <section id="about" className="scroll-mt-16 py-24 md:py-40">
+        <section id="about" className="scroll-mt-16 py-24 md:py-32">
           <div className={`${wrap} grid gap-14 md:grid-cols-12`}>
             <Reveal className="md:col-span-7">
               <h2 className="display display-xl">
@@ -137,7 +137,7 @@ export default function Home() {
         </section>
 
         {/* Why partner: big numerals, staggered layout */}
-        <section id="why" className="scroll-mt-16 bg-sand py-24 md:py-36">
+        <section id="why" className="scroll-mt-16 bg-sand py-24 md:py-28">
           <div className={wrap}>
             <Reveal>
               <h2 className="display display-lg">
@@ -161,7 +161,7 @@ export default function Home() {
         </section>
 
         {/* Products: editorial spread */}
-        <section id="products" className="scroll-mt-16 py-24 md:py-40">
+        <section id="products" className="scroll-mt-16 py-24 md:py-32">
           <div className={wrap}>
             <Reveal>
               <h2 className="display display-lg">
@@ -176,7 +176,7 @@ export default function Home() {
         </section>
 
         {/* Partnership opportunities: typographic list */}
-        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
+        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-28">
           <div className={wrap}>
             <Reveal>
               <h2 className="display display-lg">
@@ -210,10 +210,10 @@ export default function Home() {
         </section>
 
         {/* Contact: full red band */}
-        <section id="collab" className="scroll-mt-16 bg-red py-24 text-white md:py-36">
+        <section id="collab" className="scroll-mt-16 bg-red py-24 text-white md:py-28">
           <div className={`${wrap} grid gap-14 md:grid-cols-12 md:gap-8`}>
             <Reveal className="md:col-span-6">
-              <h2 className="display display-xl [&_em]:!text-white">
+              <h2 className="display display-lg [&_em]:!text-white">
                 {contact.headline} <em>{contact.accent}</em>
               </h2>
               <p className="mt-8 max-w-md text-lg text-white/85">
@@ -223,10 +223,28 @@ export default function Home() {
                 </a>
                 .
               </p>
+
+              <div className="mt-12 border-t border-white/40 pt-6">
+                <p className="label !text-white">{contact.formLabel}</p>
+                <p className="mt-3 max-w-md text-white/85">{contact.formIntro}</p>
+                <p className="label mt-8 !text-white">{contact.includeTitle}</p>
+                <ul className="mt-3 max-w-md space-y-2 text-white/85">
+                  {contact.include.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span aria-hidden>→</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Reveal>
             <Reveal delay={0.1} className="md:col-span-6">
               <div className="bg-paper p-6 text-ink md:p-10">
-                <CollabForm />
+                <p className="label !text-ink">{contact.formLabel}</p>
+                <p className="mt-2 text-sm text-mute">{contact.formNote}</p>
+                <div className="mt-8">
+                  <CollabForm />
+                </div>
               </div>
             </Reveal>
           </div>

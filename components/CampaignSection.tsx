@@ -74,10 +74,11 @@ export default function CampaignSection({ campaign: c, index = 0 }: { campaign: 
 
           {c.stats && (
             <Reveal delay={0.1} className="md:col-span-6 md:col-start-7">
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-12">
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-12">
                 {c.stats.map((s) => (
-                  <div key={s.label} className="border-t border-ink pt-4">
-                    <dt className="num text-[clamp(4rem,11vw,9rem)] text-red">{s.value}</dt>
+                  <div key={s.label} className="min-w-0 border-t border-ink pt-4">
+                    {/* Sized so "300+" always fits its column (it used to spill over the next number). */}
+                    <dt className="num whitespace-nowrap text-[clamp(3.25rem,7.5vw,6.5rem)] text-red">{s.value}</dt>
                     <dd className="label mt-3 max-w-[14ch] !text-ink">{s.label}</dd>
                   </div>
                 ))}
