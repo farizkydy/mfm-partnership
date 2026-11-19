@@ -8,14 +8,14 @@ type Status = "idle" | "sending" | "ok" | "error";
 export const TYPE_EVENT = "mfm:partnership-type";
 
 const field =
-  "w-full border-b border-silver-300 bg-transparent py-3 text-lg placeholder:text-silver-500 focus:border-maroon focus:outline-none";
+  "w-full border-b border-line bg-transparent py-3 text-base md:text-lg placeholder:text-mute focus:border-red focus:outline-none";
 
 const inputs = [
   { name: "name", label: "Full name", type: "text", auto: "name" },
   { name: "company", label: "Company / brand / creator name", type: "text", auto: "organization" },
   { name: "email", label: "Email address", type: "email", auto: "email" },
   { name: "country", label: "Country", type: "text", auto: "country-name" },
-  { name: "link", label: "Website or social media link (optional)", type: "text", auto: "url" },
+  { name: "link", label: "Website / social link (optional)", type: "text", auto: "url" },
 ];
 
 export default function CollabForm() {
@@ -64,7 +64,7 @@ export default function CollabForm() {
     );
   }
 
-  const err = (k: string) => errors[k] && <p className="mt-1 text-sm text-maroon">{errors[k]}</p>;
+  const err = (k: string) => errors[k] && <p className="mt-1 text-sm text-red">{errors[k]}</p>;
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-8">
@@ -90,7 +90,7 @@ export default function CollabForm() {
           onChange={(e) => setType(e.target.value)}
           aria-label="Partnership type"
           aria-invalid={!!errors.type}
-          className={`${field} ${type ? "" : "text-silver-500"}`}
+          className={`${field} ${type ? "" : "text-mute"}`}
         >
           <option value="" disabled>
             Partnership type
@@ -120,7 +120,7 @@ export default function CollabForm() {
         <input
           name="reference"
           type="text"
-          placeholder="Additional reference or portfolio link (optional)"
+          placeholder="Portfolio / reference link (optional)"
           aria-label="Additional reference or portfolio link"
           className={field}
         />
@@ -133,11 +133,11 @@ export default function CollabForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="bg-maroon px-8 py-4 text-sm uppercase tracking-[0.18em] text-white transition hover:bg-ink disabled:opacity-60"
+          className="btn btn-ink disabled:opacity-60"
         >
           {status === "sending" ? "Sending…" : "Submit Your Proposal"}
         </button>
-        <a href={mailto} className="label underline-offset-4 hover:text-maroon hover:underline">
+        <a href={mailto} className="label underline-offset-4 hover:text-red hover:underline">
           Or email {EMAIL}
         </a>
       </div>

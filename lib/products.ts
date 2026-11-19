@@ -12,21 +12,31 @@ function kv(slug: string, index: number, alt: string): Img {
   return { src: `/products/${slug}/kv/${f.file}`, w: f.w, h: f.h, alt };
 }
 
-export const productCategories = ["Face / Complexion", "Lips"] as const;
-export type ProductCategory = (typeof productCategories)[number];
-
 export type Product = {
   slug: string;
   name: string;
-  category: ProductCategory;
-  /** One or two short sentences. No prices, shades or ingredient lists. */
+  category: "Face / Complexion" | "Lips";
+  /** One short sentence. No prices, shades, sizes or ingredient lists. */
   description: string;
   cover: Img;
+  /** Optional supporting visual (used by the large feature tile). */
+  cover2?: Img;
+  /** Render the cover in high-contrast black and white for editorial rhythm. */
+  mono?: boolean;
   /** Optional link to the official product or campaign page. */
   href?: string;
 };
 
+/** The first product is shown as the large feature tile. */
 export const products: Product[] = [
+  {
+    slug: "glasstick",
+    name: "Ink Like Air Glasstick",
+    category: "Lips",
+    description: "A glassy gloss balm with a 6-hour soft stain and Cera-shine Tech.",
+    cover: kv("glasstick", 7, "Ink Like Air Glasstick still life"),
+    cover2: kv("glasstick", 3, "Ink Like Air Glasstick campaign visual"),
+  },
   {
     slug: "pearlfit-cushion",
     name: "Pearlfect Skin-Fit Cushion",
@@ -39,14 +49,15 @@ export const products: Product[] = [
     name: "Pearlfect Cover Silk-Fit Concealer",
     category: "Face / Complexion",
     description: "The first high-cover concealer with a pearl finish that fights acne bacteria.",
-    cover: kv("silk-fit-concealer", 1, "Pearlfect Cover Silk-Fit Concealer campaign visual"),
+    cover: kv("silk-fit-concealer", 4, "Pearlfect Cover Silk-Fit Concealer campaign visual"),
+    mono: true,
   },
   {
     slug: "skintint",
     name: "Pearl-Fect Cover Skintint",
     category: "Face / Complexion",
     description: "An 8-hour pearlfect cover tint that meets oil control, with skin-barrier care.",
-    cover: kv("skintint", 2, "Pearl-Fect Cover Skintint campaign visual"),
+    cover: kv("skintint", 3, "Pearl-Fect Cover Skintint campaign visual"),
   },
   {
     slug: "glass-blush",
@@ -61,13 +72,6 @@ export const products: Product[] = [
     category: "Lips",
     description: "The first lip oil to cover dark and chapped lips with a glossy, non-sticky finish.",
     cover: kv("glass-oil", 2, "Tinted Glass H2Oil campaign visual"),
-  },
-  {
-    slug: "glasstick",
-    name: "Ink Like Air Glasstick",
-    category: "Lips",
-    description: "A glassy gloss balm with a 6-hour soft stain and Cera-shine Tech.",
-    cover: kv("glasstick", 0, "Ink Like Air Glasstick campaign visual"),
   },
 ];
 
@@ -88,7 +92,7 @@ export type Campaign = {
   gallery: Img[];
 };
 
-/** Add new collaborations to this list; each renders as its own campaign block. */
+/** Add new collaborations to this list; the first is the takeover, the rest render as case-study tiles. */
 export const campaigns: Campaign[] = [
   {
     slug: "sashfir",
@@ -115,12 +119,11 @@ export const campaigns: Campaign[] = [
     href: "https://s.madformakeup.co/",
     keyVisual: kv("sashfir", 1, "A Touch of Sashfir key visual"),
     keyVisualMobile: kv("sashfir", 2, "A Touch of Sashfir key visual"),
-    gallery: [0, 2, 4, 6, 8, 10, 11, 13, 17].map((i) => kv("sashfir", i, `A Touch of Sashfir campaign visual ${i}`)),
+    gallery: [0, 4, 6, 8, 10, 11, 13, 17].map((i) => kv("sashfir", i, `A Touch of Sashfir campaign visual ${i}`)),
   },
 ];
 
-const heroIndex = Math.max(
-  0,
-  m.glasstick.kv.findIndex((f) => f.file.startsWith("bride-moge-kv-1-img-9904")),
-);
-export const HERO_IMAGE = kv("glasstick", heroIndex, "Mad For Makeup campaign visual");
+/** Hero collage: a colour portrait plus a smaller black-and-white crop. */
+export const HERO_IMAGE = kv("glasstick", 0, "Bride with a red lip, Mad For Makeup campaign");
+export const HERO_IMAGE_2 = kv("skintint", 7, "Close-up beauty portrait, Mad For Makeup campaign");
+export const ABOUT_IMAGE = kv("silk-fit-concealer", 8, "Mad For Makeup campaign portrait");

@@ -1,104 +1,158 @@
 import Image from "next/image";
-import CampaignSection from "@/components/CampaignSection";
+import CampaignSection, { CampaignTile } from "@/components/CampaignSection";
 import CollabForm from "@/components/CollabForm";
 import Header from "@/components/Header";
 import OpportunityCards from "@/components/OpportunityCards";
 import ProductGrid from "@/components/ProductGrid";
 import Reveal from "@/components/Reveal";
-import { campaigns, HERO_IMAGE } from "@/lib/products";
-import { about, EMAIL, footer, hero, OFFICIAL_SITE, SOCIALS, steps, whyPartner } from "@/lib/site";
+import { ABOUT_IMAGE, campaigns, HERO_IMAGE, HERO_IMAGE_2 } from "@/lib/products";
+import { about, contact, EMAIL, footer, hero, OFFICIAL_SITE, SOCIALS, steps, whyPartner } from "@/lib/site";
 
 const wrap = "mx-auto max-w-7xl px-5 md:px-10";
-const h2 = "display text-5xl md:text-7xl";
-const button =
-  "inline-block px-8 py-4 text-sm uppercase tracking-[0.18em] transition";
+const pad = (n: number) => String(n).padStart(2, "0");
 
-/**
- * Grid cell spans so the last row always fills the width (no empty cell showing the divider colour).
- * Desktop uses 6 columns: rows of 3 (span 2), a trailing pair spans 3 each, a lone item spans all 6.
- * Tablet uses 2 columns: a lone last item spans both. Full class names so Tailwind can see them.
- */
-function spanClass(i: number, n: number) {
-  const rest = n % 3;
-  const lastRow = i >= n - (rest || 3);
-  const desktop = !lastRow || rest === 0 ? "lg:col-span-2" : rest === 2 ? "lg:col-span-3" : "lg:col-span-6";
-  const tablet = n % 2 === 1 && i === n - 1 ? "sm:col-span-2" : "";
-  return `${tablet} ${desktop}`;
-}
+// Staggered, asymmetric placement for the four "why partner" themes (desktop).
+const whySlots = [
+  "md:col-span-5",
+  "md:col-span-5 md:col-start-8 md:mt-28",
+  "md:col-span-5 md:col-start-2",
+  "md:col-span-5 md:col-start-8 md:mt-28",
+];
 
 export default function Home() {
+  const [primary, ...others] = campaigns;
+
   return (
     <>
       <Header />
       <main id="top">
-        {/* Hero */}
-        <section className="relative grid min-h-screen md:grid-cols-2">
-          <div className="flex flex-col justify-end px-5 pb-16 pt-32 md:px-10">
-            <h1 className="display text-5xl md:text-7xl">
-              {hero.headline} <em>{hero.accent}</em>
-            </h1>
-            <p className="mt-8 max-w-lg text-lg text-silver-500">{hero.copy}</p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#collaborations" className={`${button} border border-ink hover:bg-ink hover:text-white`}>
-                Explore Mad
-              </a>
-              <a href="#collab" className={`${button} bg-maroon text-white hover:bg-ink`}>
-                Let&apos;s Collaborate
-              </a>
+        {/* Hero: oversized wordmark + offset photo collage */}
+        <section id="hero" className="relative px-5 pb-20 pt-24 md:px-10 md:pb-28 md:pt-28">
+          <div className="mx-auto max-w-[110rem]">
+            {/* Logo asset is white: brightness-0 turns it black on the light page. */}
+            <Image
+              src="/logo.png"
+              alt="Mad For Makeup"
+              width={1400}
+              height={105}
+              priority
+              className="h-auto w-full brightness-0"
+            />
+
+            <div className="mt-10 grid gap-12 md:mt-16 md:grid-cols-12 md:gap-8">
+              <div className="flex flex-col justify-between gap-10 md:col-span-6">
+                <h1 className="display display-lg">
+                  {hero.headline} <em>{hero.accent}</em>
+                </h1>
+                <div>
+                  <p className="max-w-md text-lg text-mute">{hero.copy}</p>
+                  <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+                    <a href="#collab" className="btn btn-red">
+                      Let&apos;s Collaborate
+                    </a>
+                    <a href="#collaborations" className="link-line">
+                      Explore Mad ↓
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative aspect-[5/6] md:col-span-6 md:aspect-auto md:h-[clamp(440px,58vh,640px)]">
+                {/* Outer box carries the crop marks (must not clip); inner box clips the photo. */}
+                <div className="crop absolute left-0 top-0 aspect-[4/5] w-[70%] bg-sand md:h-[88%] md:w-auto">
+                  <div className="relative h-full w-full overflow-hidden">
+                    <Image
+                      src={HERO_IMAGE.src}
+                      alt={HERO_IMAGE.alt}
+                      fill
+                      priority
+                      sizes="(min-width: 768px) 30vw, 70vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="absolute bottom-0 right-0 aspect-[3/4] w-[44%] overflow-hidden border-[6px] border-paper bg-sand md:h-[64%] md:w-auto md:border-8">
+                  <Image
+                    src={HERO_IMAGE_2.src}
+                    alt={HERO_IMAGE_2.alt}
+                    fill
+                    priority
+                    sizes="(min-width: 768px) 20vw, 44vw"
+                    className="mono-img object-cover"
+                  />
+                </div>
+                <p className="num absolute right-0 top-0 text-5xl text-red md:text-7xl" aria-hidden>
+                  01
+                </p>
+              </div>
             </div>
           </div>
-          <div className="relative min-h-[60vh] bg-silver-100">
-            <Image
-              src={HERO_IMAGE.src}
-              alt={HERO_IMAGE.alt}
-              fill
-              priority
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
         </section>
 
-        {/* Collaborations */}
+        {/* Sashfir takeover: first major visual after the hero */}
         <section id="collaborations" aria-label="Featured collaboration">
-          {campaigns.map((c) => (
-            <CampaignSection key={c.slug} campaign={c} />
-          ))}
+          <CampaignSection campaign={primary} index={0} />
+          {others.length > 0 && (
+            <div className={`${wrap} pb-24`}>
+              <ul className="grid gap-10 md:grid-cols-3">
+                {others.map((c, i) => (
+                  <li key={c.slug}>
+                    <CampaignTile campaign={c} index={i + 1} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
-        {/* About */}
-        <section id="about" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
-          <div className={`${wrap} grid gap-12 md:grid-cols-[1fr_1.4fr]`}>
-            <Reveal>
-              <h2 className={h2}>
-                {about.title} <em>{about.accent}</em> {about.titleEnd}
+        {/* About: editorial spread with pull quote */}
+        <section id="about" className="scroll-mt-16 py-24 md:py-40">
+          <div className={`${wrap} grid gap-14 md:grid-cols-12`}>
+            <Reveal className="md:col-span-7">
+              <h2 className="display display-xl">
+                {about.quote} <em>{about.quoteAccent}</em>
               </h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div className="max-w-xl space-y-6 text-lg text-silver-500">
+              <p className="display display-md mt-8 max-w-xl">{about.quoteSub}</p>
+              <div className="mt-12 max-w-md space-y-5 text-mute">
                 {about.paragraphs.map((p) => (
                   <p key={p}>{p}</p>
                 ))}
               </div>
             </Reveal>
+            <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:mt-32">
+              <div className="crop relative aspect-[3/4] bg-sand">
+                <div className="zoom relative h-full w-full overflow-hidden">
+                  <Image
+                    src={ABOUT_IMAGE.src}
+                    alt={ABOUT_IMAGE.alt}
+                    fill
+                    sizes="(min-width: 768px) 30vw, 100vw"
+                    className="object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </Reveal>
           </div>
         </section>
 
-        {/* Why partner */}
-        <section id="why" className="scroll-mt-16 py-24 md:py-32">
+        {/* Why partner: big numerals, staggered layout */}
+        <section id="why" className="scroll-mt-16 bg-sand py-24 md:py-36">
           <div className={wrap}>
             <Reveal>
-              <h2 className={h2}>
+              <h2 className="display display-lg">
                 Why partner <em>with Mad?</em>
               </h2>
             </Reveal>
-            <ul className="mt-16 grid gap-px bg-silver-300 sm:grid-cols-2 lg:grid-cols-6">
+            <ul className="mt-16 grid gap-14 md:mt-24 md:grid-cols-12 md:gap-x-6 md:gap-y-12">
               {whyPartner.map((w, i) => (
-                <li key={w.title} className={`bg-paper p-8 md:p-10 ${spanClass(i, whyPartner.length)}`}>
-                  <Reveal delay={(i % 3) * 0.08}>
-                    {w.stat && <p className="display text-5xl text-maroon">{w.stat}</p>}
-                    <h3 className="display text-2xl md:text-3xl">{w.title}</h3>
-                    <p className="mt-3 text-silver-500">{w.body}</p>
+                <li key={w.label} className={whySlots[i % whySlots.length]}>
+                  <Reveal delay={(i % 2) * 0.08}>
+                    <div className="border-t border-ink pt-5">
+                      <p className="num text-[clamp(4.5rem,9vw,7.5rem)] text-red">{w.stat ?? pad(i + 1)}</p>
+                      <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.18em]">{w.label}</h3>
+                      <p className="mt-3 max-w-sm text-lg text-mute">{w.body}</p>
+                    </div>
                   </Reveal>
                 </li>
               ))}
@@ -106,14 +160,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Products */}
-        <section id="products" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
+        {/* Products: editorial spread */}
+        <section id="products" className="scroll-mt-16 py-24 md:py-40">
           <div className={wrap}>
             <Reveal>
-              <h2 className={h2}>
+              <h2 className="display display-lg">
                 What Mad <em>creates.</em>
               </h2>
-              <p className="mt-6 max-w-xl text-lg text-silver-500">
+              <p className="mt-6 max-w-md text-lg text-mute">
                 An overview of our range. For full product details, visit our official website.
               </p>
             </Reveal>
@@ -121,11 +175,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Partnership opportunities */}
-        <section id="opportunities" className="scroll-mt-16 py-24 md:py-32">
+        {/* Partnership opportunities: typographic list */}
+        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
           <div className={wrap}>
             <Reveal>
-              <h2 className={h2}>
+              <h2 className="display display-lg">
                 Partnership <em>opportunities.</em>
               </h2>
             </Reveal>
@@ -133,21 +187,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How to collaborate */}
-        <section id="how" className="scroll-mt-16 bg-ink py-24 text-white md:py-32">
+        {/* How to collaborate: deliberately quieter */}
+        <section id="how" className="scroll-mt-16 py-20 md:py-28">
           <div className={wrap}>
             <Reveal>
-              <h2 className={h2}>
-                How to <em className="!text-silver-300">collaborate.</em>
+              <h2 className="display display-md">
+                How to <em>collaborate.</em>
               </h2>
             </Reveal>
-            <ol className="mt-16 grid gap-10 md:grid-cols-4">
+            <ol className="mt-12 grid gap-8 md:grid-cols-4 md:gap-6">
               {steps.map((s, i) => (
-                <li key={s.title}>
-                  <Reveal delay={i * 0.08}>
-                    <p className="display text-5xl text-silver-500">{i + 1}</p>
-                    <h3 className="display mt-4 text-2xl md:text-3xl">{s.title}</h3>
-                    <p className="mt-3 text-silver-300">{s.body}</p>
+                <li key={s.title} className="border-t border-ink pt-4">
+                  <Reveal delay={i * 0.06}>
+                    <p className="label">{pad(i + 1)}</p>
+                    <h3 className="mt-2 text-lg font-medium">{s.title}</h3>
+                    <p className="mt-2 text-sm text-mute">{s.body}</p>
                   </Reveal>
                 </li>
               ))}
@@ -155,53 +209,54 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Inquiry form */}
-        <section id="collab" className="scroll-mt-16 py-24 md:py-32">
-          <div className={`${wrap} grid gap-16 md:grid-cols-[1fr_1.1fr]`}>
-            <Reveal>
-              <h2 className={h2}>
-                Let&apos;s work <em>together.</em>
+        {/* Contact: full red band */}
+        <section id="collab" className="scroll-mt-16 bg-red py-24 text-white md:py-36">
+          <div className={`${wrap} grid gap-14 md:grid-cols-12 md:gap-8`}>
+            <Reveal className="md:col-span-6">
+              <h2 className="display display-xl [&_em]:!text-white">
+                {contact.headline} <em>{contact.accent}</em>
               </h2>
-              <p className="mt-6 max-w-md text-lg text-silver-500">
+              <p className="mt-8 max-w-md text-lg text-white/85">
                 Tell us about your brand and your idea. You can also write to{" "}
-                <a className="text-ink underline underline-offset-4 hover:text-maroon" href={`mailto:${EMAIL}`}>
+                <a className="underline underline-offset-4 hover:text-ink" href={`mailto:${EMAIL}`}>
                   {EMAIL}
                 </a>
                 .
               </p>
             </Reveal>
-            <Reveal delay={0.1}>
-              <CollabForm />
+            <Reveal delay={0.1} className="md:col-span-6">
+              <div className="bg-paper p-6 text-ink md:p-10">
+                <CollabForm />
+              </div>
             </Reveal>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-silver-300 px-5 py-14 md:px-10">
+      <footer className="bg-ink px-5 py-16 text-white md:px-10">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
-            {/* Logo asset is white: brightness-0 turns it black on the light footer. */}
-            <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto brightness-0 md:h-5" />
-            <p className="mt-5 max-w-xs text-silver-500">{footer.description}</p>
+            <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto md:h-5" />
+            <p className="mt-5 max-w-xs text-white/70">{footer.description}</p>
           </div>
           <nav aria-label="Social and website" className="flex flex-col gap-3">
-            <a href={OFFICIAL_SITE} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
+            <a href={OFFICIAL_SITE} target="_blank" rel="noopener noreferrer" className="label !text-white/70 hover:!text-white">
               Official website
             </a>
             {SOCIALS.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="label !text-white/70 hover:!text-white">
                 {s.label}
               </a>
             ))}
           </nav>
           <div>
-            <p className="label">Partnership contact</p>
-            <a href={`mailto:${EMAIL}`} className="mt-3 block hover:text-maroon">
+            <p className="label !text-white/70">Partnership contact</p>
+            <a href={`mailto:${EMAIL}`} className="mt-3 block hover:text-red">
               {EMAIL}
             </a>
           </div>
         </div>
-        <p className="mx-auto mt-12 max-w-7xl text-sm text-silver-500">
+        <p className="mx-auto mt-12 max-w-7xl text-sm text-white/50">
           © {footer.year} Mad For Makeup. All rights reserved.
         </p>
       </footer>

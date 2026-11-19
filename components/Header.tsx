@@ -2,11 +2,30 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { nav } from "@/lib/site";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  // The hero carries a giant wordmark, so the header logo only appears once it has scrolled away,
+  // but the bar gets its background as soon as the page leaves the very top.
+  const [pastHero, setPastHero] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const sentinel = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const hero = document.getElementById("hero");
+    const top = sentinel.current;
+    if (!hero || !top) return;
+    const heroIO = new IntersectionObserver(([e]) => setPastHero(!e.isIntersecting), { rootMargin: "-80px 0px 0px 0px" });
+    const topIO = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting));
+    heroIO.observe(hero);
+    topIO.observe(top);
+    return () => {
+      heroIO.disconnect();
+      topIO.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -21,31 +40,45 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-4 px-4 py-4 text-white mix-blend-difference md:px-10">
-        <a href="#top" aria-label="Mad For Makeup, back to top" className="shrink-0">
-          {/* White logo + mix-blend-difference keeps it visible on any background. */}
-          <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} priority className="h-3 w-auto sm:h-4 lg:h-5" />
+      {/* Sits at the very top of the document; leaving the viewport means the page has scrolled. */}
+      <div ref={sentinel} aria-hidden className="pointer-events-none absolute left-0 top-0 h-4 w-px" />
+      <header
+        className={`fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-4 px-4 py-3 transition-colors duration-300 md:px-10 ${
+          scrolled ? "border-b border-line bg-paper/90 backdrop-blur-sm" : "bg-transparent"
+        }`}
+      >
+        <a
+          href="#top"
+          aria-label="Mad For Makeup, back to top"
+          className={`shrink-0 transition-opacity duration-300 ${pastHero ? "opacity-100" : "pointer-events-none opacity-0"}`}
+          tabIndex={pastHero ? 0 : -1}
+        >
+          {/* Logo asset is white: brightness-0 turns it black on the light header. */}
+          <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-3 w-auto brightness-0 sm:h-4 lg:h-5" />
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
+        <nav aria-label="Primary" className="ml-auto hidden items-center gap-6 lg:flex">
           {nav.slice(1).map((l) => (
-            <a key={l.href} href={l.href} className="label !text-white hover:underline">
+            <a key={l.href} href={l.href} className="label !text-ink hover:!text-red">
               {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
-          <a href="#collab" className="label border border-white px-3 py-2 !text-white hover:bg-white hover:!text-black">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <a
+            href="#collab"
+            className="btn btn-red whitespace-nowrap !px-3 !py-2.5 !text-[0.6rem] !tracking-[0.1em] sm:!px-4 sm:!text-[0.68rem] sm:!tracking-[0.18em]"
+          >
             Let&apos;s Collaborate
           </a>
           <button
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="menu-overlay"
-            className="label !text-white lg:hidden"
+            className="label relative z-50 !text-ink lg:hidden"
           >
-            {open ? "Close" : "Menu"}
+            {open ? <span className="!text-white">Close</span> : "Menu"}
           </button>
         </div>
       </header>
@@ -64,11 +97,7 @@ export default function Header() {
             <ul className="space-y-2">
               {nav.map((l) => (
                 <li key={l.href}>
-                  <a
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="display block text-4xl hover:italic sm:text-5xl"
-                  >
+                  <a href={l.href} onClick={() => setOpen(false)} className="display block text-4xl hover:italic sm:text-5xl">
                     {l.label}
                   </a>
                 </li>

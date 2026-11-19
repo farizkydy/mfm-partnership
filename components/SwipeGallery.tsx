@@ -6,31 +6,26 @@ import type { Img } from "@/lib/products";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function SwipeGallery({
-  images,
-  label,
-  fit = "cover",
-}: {
-  images: Img[];
-  label: string;
-  fit?: "cover" | "contain";
-}) {
+export default function SwipeGallery({ images, label }: { images: Img[]; label: string }) {
   const ref = useRef<HTMLUListElement>(null);
   const [index, setIndex] = useState(0);
 
-  const go = useCallback((i: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const next = Math.max(0, Math.min(images.length - 1, i));
-    const child = el.children[next] as HTMLElement | undefined;
-    el.scrollTo({ left: child?.offsetLeft ?? 0, behavior: "smooth" });
-  }, [images.length]);
+  const go = useCallback(
+    (i: number) => {
+      const el = ref.current;
+      if (!el) return;
+      const next = Math.max(0, Math.min(images.length - 1, i));
+      const child = el.children[next] as HTMLElement | undefined;
+      el.scrollTo({ left: child?.offsetLeft ?? 0, behavior: "smooth" });
+    },
+    [images.length],
+  );
 
   const onScroll = () => {
     const el = ref.current;
     if (!el) return;
     const w = (el.children[0] as HTMLElement | undefined)?.offsetWidth ?? 1;
-    setIndex(Math.round(el.scrollLeft / (w + 16)));
+    setIndex(Math.round(el.scrollLeft / (w + 12)));
   };
 
   if (images.length === 0) return null;
@@ -45,21 +40,16 @@ export default function SwipeGallery({
           if (e.key === "ArrowRight") go(index + 1);
           if (e.key === "ArrowLeft") go(index - 1);
         }}
-        className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto"
+        className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto"
       >
         {images.map((img, i) => (
-          <li
-            key={img.src}
-            className={`relative aspect-[4/5] w-[78%] shrink-0 snap-start overflow-hidden md:w-[38%] ${
-              fit === "contain" ? "bg-silver-50" : "bg-silver-100"
-            }`}
-          >
+          <li key={img.src} className="relative aspect-[3/4] w-[82%] shrink-0 snap-start overflow-hidden bg-sand">
             <Image
               src={img.src}
               alt={img.alt}
               fill
-              sizes="(min-width: 768px) 38vw, 78vw"
-              className={fit === "contain" ? "object-contain p-6" : "object-cover"}
+              sizes="82vw"
+              className="object-cover"
               loading={i < 2 ? "eager" : "lazy"}
             />
           </li>
@@ -70,10 +60,10 @@ export default function SwipeGallery({
           {pad(Math.min(index + 1, images.length))} / {pad(images.length)}
         </span>
         <div className="flex gap-4">
-          <button onClick={() => go(index - 1)} className="label hover:text-maroon" aria-label="Previous">
+          <button onClick={() => go(index - 1)} className="label hover:!text-red" aria-label="Previous">
             ← Prev
           </button>
-          <button onClick={() => go(index + 1)} className="label hover:text-maroon" aria-label="Next">
+          <button onClick={() => go(index + 1)} className="label hover:!text-red" aria-label="Next">
             Next →
           </button>
         </div>
