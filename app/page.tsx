@@ -188,7 +188,7 @@ export default function Home() {
         </section>
 
         {/* How to collaborate: deliberately quieter */}
-        <section id="how" className="scroll-mt-16 py-20 md:py-28">
+        <section id="how" className="scroll-mt-16 py-10 md:py-14">
           <div className={wrap}>
             <Reveal>
               <h2 className="display display-md">
@@ -210,7 +210,7 @@ export default function Home() {
         </section>
 
         {/* Contact: full red band */}
-        <section id="collab" className="scroll-mt-16 bg-red py-24 text-white md:py-28">
+        <section id="collab" className="scroll-mt-16 bg-red py-12 text-white md:py-14">
           <div className={`${wrap} grid gap-14 md:grid-cols-12 md:gap-8`}>
             <Reveal className="md:col-span-6">
               <h2 className="display display-lg [&_em]:!text-white">
