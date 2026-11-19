@@ -1,17 +1,35 @@
 "use client";
 
-import { useState } from "react";
-import { EMAIL } from "@/lib/products";
+import { useEffect, useState } from "react";
+import { EMAIL, PARTNERSHIP_TYPES } from "@/lib/site";
 
 type Status = "idle" | "sending" | "ok" | "error";
+
+export const TYPE_EVENT = "mfm:partnership-type";
 
 const field =
   "w-full border-b border-silver-300 bg-transparent py-3 text-lg placeholder:text-silver-500 focus:border-maroon focus:outline-none";
 
+const inputs = [
+  { name: "name", label: "Full name", type: "text", auto: "name" },
+  { name: "company", label: "Company / brand / creator name", type: "text", auto: "organization" },
+  { name: "email", label: "Email address", type: "email", auto: "email" },
+  { name: "country", label: "Country", type: "text", auto: "country-name" },
+  { name: "link", label: "Website or social media link (optional)", type: "text", auto: "url" },
+];
+
 export default function CollabForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [type, setType] = useState("");
   const [mailto, setMailto] = useState(`mailto:${EMAIL}?subject=${encodeURIComponent("Lets Work Together:")}`);
+
+  // Partnership cards above the form preselect the matching type.
+  useEffect(() => {
+    const onType = (e: Event) => setType((e as CustomEvent<string>).detail);
+    window.addEventListener(TYPE_EVENT, onType);
+    return () => window.removeEventListener(TYPE_EVENT, onType);
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,6 +47,7 @@ export default function CollabForm() {
       if (res.ok) {
         setStatus("ok");
         form.reset();
+        setType("");
       } else {
         setErrors(json.errors ?? {});
         setStatus("error");
@@ -38,30 +57,18 @@ export default function CollabForm() {
     }
     setMailto(
       `mailto:${EMAIL}?subject=${encodeURIComponent(`Lets Work Together: ${data.type ?? ""}`)}&body=${encodeURIComponent(
-        `${data.message ?? ""}\n\n${data.name ?? ""}\n${data.company ?? ""}\n${data.email ?? ""}`,
+        [data.message, "", data.name, data.company, data.email, data.country, data.link, data.reference]
+          .filter((v) => v !== undefined)
+          .join("\n"),
       )}`,
     );
   }
 
+  const err = (k: string) => errors[k] && <p className="mt-1 text-sm text-maroon">{errors[k]}</p>;
+
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-8">
-      <fieldset>
-        <legend className="label mb-3">I&apos;m reaching out as</legend>
-        <div className="flex gap-6">
-          {["Brand", "Influencer / Agency"].map((t, i) => (
-            <label key={t} className="flex cursor-pointer items-center gap-2">
-              <input type="radio" name="type" value={t} defaultChecked={i === 0} className="accent-[var(--maroon)]" />
-              {t}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      {[
-        { name: "name", label: "Your name", type: "text", auto: "name" },
-        { name: "company", label: "Brand / handle", type: "text", auto: "organization" },
-        { name: "email", label: "Email", type: "email", auto: "email" },
-      ].map((f) => (
+      {inputs.map((f) => (
         <div key={f.name}>
           <input
             name={f.name}
@@ -72,20 +79,51 @@ export default function CollabForm() {
             aria-invalid={!!errors[f.name]}
             className={field}
           />
-          {errors[f.name] && <p className="mt-1 text-sm text-maroon">{errors[f.name]}</p>}
+          {err(f.name)}
         </div>
       ))}
+
+      <div>
+        <select
+          name="type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          aria-label="Partnership type"
+          aria-invalid={!!errors.type}
+          className={`${field} ${type ? "" : "text-silver-500"}`}
+        >
+          <option value="" disabled>
+            Partnership type
+          </option>
+          {PARTNERSHIP_TYPES.map((t) => (
+            <option key={t} value={t} className="text-ink">
+              {t}
+            </option>
+          ))}
+        </select>
+        {err("type")}
+      </div>
 
       <div>
         <textarea
           name="message"
           rows={4}
-          placeholder="Tell us about the collaboration you have in mind"
-          aria-label="Message"
+          placeholder="Brief description of your proposal"
+          aria-label="Brief description of your proposal"
           aria-invalid={!!errors.message}
           className={field}
         />
-        {errors.message && <p className="mt-1 text-sm text-maroon">{errors.message}</p>}
+        {err("message")}
+      </div>
+
+      <div>
+        <input
+          name="reference"
+          type="text"
+          placeholder="Additional reference or portfolio link (optional)"
+          aria-label="Additional reference or portfolio link"
+          className={field}
+        />
       </div>
 
       {/* honeypot */}
@@ -97,7 +135,7 @@ export default function CollabForm() {
           disabled={status === "sending"}
           className="bg-maroon px-8 py-4 text-sm uppercase tracking-[0.18em] text-white transition hover:bg-ink disabled:opacity-60"
         >
-          {status === "sending" ? "Sending…" : "Send inquiry"}
+          {status === "sending" ? "Sending…" : "Submit Your Proposal"}
         </button>
         <a href={mailto} className="label underline-offset-4 hover:text-maroon hover:underline">
           Or email {EMAIL}
@@ -105,7 +143,7 @@ export default function CollabForm() {
       </div>
 
       <p role="status" aria-live="polite" className="text-sm">
-        {status === "ok" && "Thank you. We've received your inquiry and will be in touch."}
+        {status === "ok" && "Thank you. We've received your proposal and will be in touch."}
         {status === "error" && !Object.keys(errors).length && "Something went wrong. Please use the email link above."}
       </p>
     </form>

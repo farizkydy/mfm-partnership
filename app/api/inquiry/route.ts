@@ -1,5 +1,7 @@
+import partnershipTypes from "../../../lib/partnership-types.json" with { type: "json" };
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TYPES = ["Brand", "Influencer / Agency"];
+const oneLine = (s: string) => s.replace(/[\r\n]+/g, " ").trim();
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
@@ -18,16 +20,30 @@ export async function POST(request: Request) {
   const name = str("name");
   const company = str("company");
   const email = str("email");
+  const country = str("country");
+  const link = str("link");
+  const type = str("type");
   const message = str("message");
-  const type = TYPES.includes(str("type")) ? str("type") : "Brand";
+  const reference = str("reference");
 
   const errors: Record<string, string> = {};
-  if (name.length < 2) errors.name = "Please enter your name.";
-  if (!company) errors.company = "Please tell us your brand or handle.";
-  if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email.";
-  if (message.length < 10) errors.message = "Please add a few more details.";
-  if (name.length > 120 || company.length > 160 || email.length > 160 || message.length > 4000) {
-    errors.message = "Input is too long.";
+  if (name.length < 2) errors.name = "Please enter your full name.";
+  if (!company) errors.company = "Please tell us your company, brand or creator name.";
+  if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email address.";
+  if (!country) errors.country = "Please enter your country.";
+  if (link && link.length < 3) errors.link = "Please enter a valid website or social link.";
+  if (!partnershipTypes.includes(type)) errors.type = "Please choose a partnership type.";
+  if (message.length < 10) errors.message = "Please add a few more details about your proposal.";
+  if (
+    name.length > 120 ||
+    company.length > 160 ||
+    email.length > 160 ||
+    country.length > 80 ||
+    link.length > 300 ||
+    reference.length > 300 ||
+    message.length > 4000
+  ) {
+    errors.message = "One of the fields is too long.";
   }
   if (Object.keys(errors).length) {
     return Response.json({ errors }, { status: 422 });
@@ -50,9 +66,19 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `Partnership inquiry (${type}): ${company}`.slice(0, 200),
+        subject: `Partnership inquiry (${type}): ${oneLine(company)}`.slice(0, 200),
         // Plain text only, so visitor input can never be interpreted as HTML.
-        text: `Type: ${type}\nName: ${name}\nBrand / handle: ${company}\nEmail: ${email}\n\n${message}`,
+        text: [
+          `Partnership type: ${type}`,
+          `Name: ${oneLine(name)}`,
+          `Company / brand / creator: ${oneLine(company)}`,
+          `Email: ${email}`,
+          `Country: ${oneLine(country)}`,
+          `Website / social: ${oneLine(link) || "-"}`,
+          `Reference / portfolio: ${oneLine(reference) || "-"}`,
+          "",
+          message,
+        ].join("\n"),
       }),
       signal: AbortSignal.timeout(10_000),
     });

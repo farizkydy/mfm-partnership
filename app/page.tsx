@@ -1,41 +1,38 @@
 import Image from "next/image";
+import CampaignSection from "@/components/CampaignSection";
 import CollabForm from "@/components/CollabForm";
 import Header from "@/components/Header";
-import ProductSection from "@/components/ProductSection";
+import OpportunityCards from "@/components/OpportunityCards";
+import ProductGrid from "@/components/ProductGrid";
 import Reveal from "@/components/Reveal";
-import { EMAIL, HERO_IMAGE, INSTAGRAM, products } from "@/lib/products";
+import { campaigns, HERO_IMAGE } from "@/lib/products";
+import { about, EMAIL, footer, hero, OFFICIAL_SITE, SOCIALS, steps, whyPartner } from "@/lib/site";
 
-const tracks = [
-  {
-    title: "Brand collaboration",
-    points: [
-      "Co-branded product and limited-edition drops",
-      "Joint campaigns with shared key visuals",
-      "Retail and event activations",
-    ],
-  },
-  {
-    title: "Influencer collaboration",
-    points: [
-      "Product seeding and honest first-look content",
-      "Shade-match and tutorial features",
-      "Community access through Rebel Secret Society",
-    ],
-  },
-];
+const wrap = "mx-auto max-w-7xl px-5 md:px-10";
+const h2 = "display text-5xl md:text-7xl";
+const button =
+  "inline-block px-8 py-4 text-sm uppercase tracking-[0.18em] transition";
 
 export default function Home() {
   return (
     <>
       <Header />
       <main id="top">
-        {/* 01 Hero */}
+        {/* Hero */}
         <section className="relative grid min-h-screen md:grid-cols-2">
           <div className="flex flex-col justify-end px-5 pb-16 pt-32 md:px-10">
-            <h1 className="display text-6xl md:text-8xl">Mad for makeup.</h1>
-            <a href="#about" className="label mt-10 hover:text-maroon">
-              Find out more ↓
-            </a>
+            <h1 className="display text-5xl md:text-7xl">
+              {hero.headline} <em>{hero.accent}</em>
+            </h1>
+            <p className="mt-8 max-w-lg text-lg text-silver-500">{hero.copy}</p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a href="#collaborations" className={`${button} border border-ink hover:bg-ink hover:text-white`}>
+                Explore Mad
+              </a>
+              <a href="#collab" className={`${button} bg-maroon text-white hover:bg-ink`}>
+                Let&apos;s Collaborate
+              </a>
+            </div>
           </div>
           <div className="relative min-h-[60vh] bg-silver-100">
             <Image
@@ -49,82 +46,121 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 02 About */}
+        {/* Collaborations */}
+        <section id="collaborations" className="scroll-mt-16 py-24 md:py-32">
+          <div className={wrap}>
+            <Reveal className="mb-16">
+              <h2 className={h2}>
+                Featured <em>collaboration.</em>
+              </h2>
+              <p className="mt-6 max-w-xl text-lg text-silver-500">
+                A look at what Mad can build with the right partner.
+              </p>
+            </Reveal>
+            {campaigns.map((c) => (
+              <CampaignSection key={c.slug} campaign={c} />
+            ))}
+          </div>
+        </section>
+
+        {/* About */}
         <section id="about" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
-          <div className="mx-auto grid max-w-7xl gap-12 px-5 md:grid-cols-[1fr_1.4fr] md:px-10">
+          <div className={`${wrap} grid gap-12 md:grid-cols-[1fr_1.4fr]`}>
             <Reveal>
-              <h2 className="display text-5xl md:text-7xl">
-                Bold, minimal, <em>unapologetically</em> makeup.
+              <h2 className={h2}>
+                {about.title} <em>{about.accent}</em> {about.titleEnd}
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="max-w-xl space-y-6 text-lg text-silver-500">
-                <p>
-                  Mad For Makeup is an Indonesian makeup brand built on the belief that makeup should never come
-                  with rules or limitations.
-                </p>
-                <p>
-                  We create innovative, high-performance, acne-safe makeup designed for real skin, real people, and
-                  real life. We believe everyone deserves to feel confident in their own skin because, well,
-                  everyone gets acne.
-                </p>
-                <p>
-                  We&apos;re here to challenge beauty norms, make makeup more inclusive, and encourage everyone to
-                  express themselves unapologetically.
-                </p>              </div>
+                {about.paragraphs.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </div>
             </Reveal>
           </div>
         </section>
 
-        {/* 03 Products */}
-        <section id="products" className="scroll-mt-16 pt-24 md:pt-32">
-          <div className="mx-auto max-w-7xl px-5 pb-16 md:px-10">
+        {/* Why partner */}
+        <section id="why" className="scroll-mt-16 py-24 md:py-32">
+          <div className={wrap}>
             <Reveal>
-              <h2 className="display text-5xl md:text-7xl">
-                The <em>lineup.</em>
+              <h2 className={h2}>
+                Why partner <em>with Mad?</em>
               </h2>
             </Reveal>
-          </div>
-          {products.map((p) => (
-            <ProductSection key={p.slug} product={p} />
-          ))}
-        </section>
-
-        {/* 04 Engagement */}
-        <section id="engagement" className="scroll-mt-16 bg-ink py-24 text-white md:py-32">
-          <div className="mx-auto max-w-7xl px-5 md:px-10">
-            <Reveal>
-              <h2 className="display text-5xl md:text-7xl">
-                Ways to <em className="!text-silver-300">work together.</em>
-              </h2>
-            </Reveal>
-            <div className="mt-16 grid gap-px bg-white/20 md:grid-cols-2">
-              {tracks.map((t, i) => (
-                <Reveal key={t.title} delay={i * 0.1} className="bg-ink p-8 md:p-12">
-                  <h3 className="display text-3xl md:text-4xl">{t.title}</h3>
-                  <ul className="mt-8 space-y-4 text-silver-300">
-                    {t.points.map((p) => (
-                      <li key={p} className="flex gap-3">
-                        <span aria-hidden className="text-silver-500">+</span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
+            <ul className="mt-16 grid gap-px bg-silver-300 sm:grid-cols-2 lg:grid-cols-3">
+              {whyPartner.map((w, i) => (
+                <li key={w.title} className="bg-paper p-8">
+                  <Reveal delay={(i % 3) * 0.08}>
+                    {w.stat && <p className="display text-5xl text-maroon">{w.stat}</p>}
+                    <h3 className="display text-2xl md:text-3xl">{w.title}</h3>
+                    <p className="mt-3 text-silver-500">{w.body}</p>
+                  </Reveal>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
-        {/* 05 Collab */}
-        <section id="collab" className="scroll-mt-16 py-24 md:py-32">
-          <div className="mx-auto grid max-w-7xl gap-16 px-5 md:grid-cols-[1fr_1.1fr] md:px-10">
+        {/* Products */}
+        <section id="products" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
+          <div className={wrap}>
             <Reveal>
-              <h2 className="display text-5xl md:text-7xl">
+              <h2 className={h2}>
+                What Mad <em>creates.</em>
+              </h2>
+              <p className="mt-6 max-w-xl text-lg text-silver-500">
+                An overview of our range. For full product details, visit our official website.
+              </p>
+            </Reveal>
+            <ProductGrid />
+          </div>
+        </section>
+
+        {/* Partnership opportunities */}
+        <section id="opportunities" className="scroll-mt-16 py-24 md:py-32">
+          <div className={wrap}>
+            <Reveal>
+              <h2 className={h2}>
+                Partnership <em>opportunities.</em>
+              </h2>
+            </Reveal>
+            <OpportunityCards />
+          </div>
+        </section>
+
+        {/* How to collaborate */}
+        <section id="how" className="scroll-mt-16 bg-ink py-24 text-white md:py-32">
+          <div className={wrap}>
+            <Reveal>
+              <h2 className={h2}>
+                How to <em className="!text-silver-300">collaborate.</em>
+              </h2>
+            </Reveal>
+            <ol className="mt-16 grid gap-10 md:grid-cols-4">
+              {steps.map((s, i) => (
+                <li key={s.title}>
+                  <Reveal delay={i * 0.08}>
+                    <p className="display text-5xl text-silver-500">{i + 1}</p>
+                    <h3 className="display mt-4 text-2xl md:text-3xl">{s.title}</h3>
+                    <p className="mt-3 text-silver-300">{s.body}</p>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Inquiry form */}
+        <section id="collab" className="scroll-mt-16 py-24 md:py-32">
+          <div className={`${wrap} grid gap-16 md:grid-cols-[1fr_1.1fr]`}>
+            <Reveal>
+              <h2 className={h2}>
                 Let&apos;s work <em>together.</em>
               </h2>
               <p className="mt-6 max-w-md text-lg text-silver-500">
-                Tell us who you are and what you have in mind. You can also write to{" "}
+                Tell us about your brand and your idea. You can also write to{" "}
                 <a className="text-ink underline underline-offset-4 hover:text-maroon" href={`mailto:${EMAIL}`}>
                   {EMAIL}
                 </a>
@@ -138,20 +174,33 @@ export default function Home() {
         </section>
       </main>
 
-      {/* 06 Footer */}
-      <footer className="border-t border-silver-300 px-5 py-10 md:px-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
-          {/* Logo asset is white: brightness-0 turns it black on the light footer. */}
-          <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto brightness-0 md:h-5" />
-          <nav aria-label="Social" className="flex gap-6">
-            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
-              Instagram @madformakeup.co
+      <footer className="border-t border-silver-300 px-5 py-14 md:px-10">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
+          <div>
+            {/* Logo asset is white: brightness-0 turns it black on the light footer. */}
+            <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto brightness-0 md:h-5" />
+            <p className="mt-5 max-w-xs text-silver-500">{footer.description}</p>
+          </div>
+          <nav aria-label="Social and website" className="flex flex-col gap-3">
+            <a href={OFFICIAL_SITE} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
+              Official website
             </a>
-            <a href="https://madformakeup.co" className="label hover:text-maroon">
-              madformakeup.co
-            </a>
+            {SOCIALS.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
+                {s.label}
+              </a>
+            ))}
           </nav>
+          <div>
+            <p className="label">Partnership contact</p>
+            <a href={`mailto:${EMAIL}`} className="mt-3 block hover:text-maroon">
+              {EMAIL}
+            </a>
+          </div>
         </div>
+        <p className="mx-auto mt-12 max-w-7xl text-sm text-silver-500">
+          © {footer.year} Mad For Makeup. All rights reserved.
+        </p>
       </footer>
     </>
   );

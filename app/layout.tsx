@@ -15,12 +15,12 @@ const serif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Mad For Makeup: Partnerships",
+  title: "Mad For Makeup: International Partnership Hub",
   description:
-    "Collaborate with Mad For Makeup. Explore the brand, the product lineup and how brands and creators can partner with us.",
+    "Mad For Makeup, an Indonesian beauty brand open to international brand, creator, marketing and distribution partnerships.",
   openGraph: {
-    title: "Mad For Makeup: Partnerships",
-    description: "Brand and influencer collaborations with Mad For Makeup.",
+    title: "Mad For Makeup: International Partnership Hub",
+    description: "Partner with Mad For Makeup: brands, creators, agencies and distributors.",
     type: "website",
   },
 };

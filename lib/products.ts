@@ -1,215 +1,117 @@
 import manifest from "./manifest.json";
 
-export type Img = { src: string; w: number; h: number; alt: string; caption?: string };
-
-export type Product = {
-  slug: string;
-  number: string;
-  name: string;
-  category: string;
-  tagline: string;
-  /** Source: "Product Knowledge_Updated June 2026" deck; Sashfir from s.madformakeup.co. */
-  details: { label: string; body: string }[];
-  stats?: { value: string; label: string }[];
-  link?: { href: string; label: string };
-  kv: Img[];
-  pack: Img[];
-  featuredPack?: string;
-};
+export type Img = { src: string; w: number; h: number; alt: string };
 
 type Raw = { file: string; w: number; h: number }[];
 const m = manifest as Record<string, { kv: Raw; pack: Raw }>;
 
-const toImgs = (slug: string, kind: "kv" | "pack", name: string): Img[] =>
-  m[slug][kind].map((f, i) => ({
-    src: `/products/${slug}/${kind}/${f.file}`,
-    w: f.w,
-    h: f.h,
-    alt: `${name} ${kind === "kv" ? "campaign visual" : "packshot"} ${i + 1}`,
-  }));
+/** Image by position in the converted KV folder (see lib/manifest.json). Throws at build if missing. */
+function kv(slug: string, index: number, alt: string): Img {
+  const f = m[slug].kv[index];
+  if (!f) throw new Error(`Missing KV image ${slug}[${index}]`);
+  return { src: `/products/${slug}/kv/${f.file}`, w: f.w, h: f.h, alt };
+}
 
-const defs: Omit<Product, "kv" | "pack">[] = [
+export const productCategories = ["Face / Complexion", "Lips"] as const;
+export type ProductCategory = (typeof productCategories)[number];
+
+export type Product = {
+  slug: string;
+  name: string;
+  category: ProductCategory;
+  /** One or two short sentences. No prices, shades or ingredient lists. */
+  description: string;
+  cover: Img;
+  /** Optional link to the official product or campaign page. */
+  href?: string;
+};
+
+export const products: Product[] = [
   {
     slug: "pearlfit-cushion",
-    number: "01",
     name: "Pearlfect Skin-Fit Cushion",
-    category: "Face",
-    tagline: "Hi-cover cushion for combination skin, with a dual-sided puff.",
-    featuredPack: "cushion-front.webp",
-    details: [
-      { label: "Size", body: "13 gr" },
-      {
-        label: "Why it works",
-        body: "A lightweight texture that blurs imperfections and evens out skin tone. Metagram Tech combines oil control with water infusion. #PearlfectCoverage",
-      },
-      {
-        label: "5 shades",
-        body: "N1 light, neutral · N1.5 light to medium, neutral · W1 light to medium, warm · N2 medium, neutral · W2 medium to tan, warm.",
-      },
-    ],
+    category: "Face / Complexion",
+    description: "A hi-cover cushion for combination skin, with oil control and a dual-sided puff.",
+    cover: kv("pearlfit-cushion", 9, "Pearlfect Skin-Fit Cushion campaign visual"),
   },
   {
     slug: "silk-fit-concealer",
-    number: "02",
     name: "Pearlfect Cover Silk-Fit Concealer",
-    category: "Face",
-    tagline: "The first high-cover concealer with a pearl finish that fights acne bacteria.",
-    featuredPack: "pearlfect-cover-silk-fit-concealer-n1.webp",
-    details: [
-      { label: "Size", body: "6.8 gr" },
-      {
-        label: "Why it works",
-        body: "High cover with a pearl finish that fights acne-causing bacteria, made for combination skin. #PearlfectCoverage",
-      },
-      {
-        label: "5 shades",
-        body: "N1 light, neutral · N1.5 light to medium, neutral · N2 medium, neutral · N2.3 medium to tan, neutral olive · W1 light to medium, warm.",
-      },
-    ],
+    category: "Face / Complexion",
+    description: "The first high-cover concealer with a pearl finish that fights acne bacteria.",
+    cover: kv("silk-fit-concealer", 1, "Pearlfect Cover Silk-Fit Concealer campaign visual"),
   },
   {
     slug: "skintint",
-    number: "03",
     name: "Pearl-Fect Cover Skintint",
-    category: "Face",
-    tagline: "8-hour pearlfect cover tint meets oil control.",
-    featuredPack: "skin-tint.webp",
-    details: [
-      { label: "Size", body: "23 ml" },
-      {
-        label: "Why it works",
-        body: "Minimal oxidation and UV protection. Enriched with Centella Asiatica, Squalane and Ceramide to support the skin barrier. Suitable for all skin types.",
-      },
-      {
-        label: "12 shades",
-        body: "Cool: C1, C2, C3 · Neutral: N1, N1.5, N2, N2.3, N3 · Warm: W0.5, W1, W2, W3. From very light to tan.",
-      },
-    ],
+    category: "Face / Complexion",
+    description: "An 8-hour pearlfect cover tint that meets oil control, with skin-barrier care.",
+    cover: kv("skintint", 2, "Pearl-Fect Cover Skintint campaign visual"),
   },
   {
     slug: "glass-blush",
-    number: "04",
     name: "Long Lasting Glass Blush",
-    category: "Cheek",
-    tagline: "A glow-glass finish blush with primer-like tech that lasts.",
-    featuredPack: "glass-blush-packshot.webp",
-    details: [
-      { label: "Size", body: "5 ml" },
-      {
-        label: "Why it works",
-        body: "Adds a natural flush to cheeks or anywhere you want to highlight, with a luminous glass finish. Dermatology tested.",
-      },
-      {
-        label: "5 shades",
-        body: "Rose Quartz (neutral) · Pink Amethyst (neutral) · Moon Rose (cool) · Red Jasper (warm) · Coco Quartz (warm).",
-      },
-    ],
+    category: "Face / Complexion",
+    description: "A glow-glass finish blush with primer-like tech for a natural, luminous flush.",
+    cover: kv("glass-blush", 2, "Long Lasting Glass Blush campaign visual"),
   },
   {
     slug: "glass-oil",
-    number: "05",
     name: "Tinted Glass H2Oil",
     category: "Lips",
-    tagline: "The first lip oil to cover dark and chapped lips with a glossy finish.",
-    featuredPack: "glass-oil-v2-transparent-rr.webp",
-    details: [
-      { label: "Size", body: "3.4 ml" },
-      {
-        label: "Why it works",
-        body: "Non-sticky, weightless lip oil that hydrates and heals, with a luminous glass finish. Made with Vitamin E, Vitamin C, Ceramide, Shea Butter and Cocoa Butter.",
-      },
-      {
-        label: "5 shades",
-        body: "Spring Fling (dark mauve) · Pink Plastic (mauve pink) · Rally Rose (rosy coral) · Cherry Smash (vibrant cherry red) · Wife Me Up (wine).",
-      },
-    ],
+    description: "The first lip oil to cover dark and chapped lips with a glossy, non-sticky finish.",
+    cover: kv("glass-oil", 2, "Tinted Glass H2Oil campaign visual"),
   },
   {
     slug: "glasstick",
-    number: "06",
     name: "Ink Like Air Glasstick",
     category: "Lips",
-    tagline: "A glassy gloss balm with a 6-hour soft stain and Cera-shine Tech.",
-    featuredPack: "glasstick-marry-me.webp",
-    details: [
-      { label: "Size", body: "4 gr" },
-      {
-        label: "Why it works",
-        body: "Cera-shine Tech traps pigment and moisture under a glassy top layer for non-sticky, soft-pigmented lips. Enriched with 3x Ceramide, Shea Butter and Jojoba for up to 6 hours of nourishment.",
-      },
-      {
-        label: "8 shades",
-        body: "Spring Fling · The One · Marry Me · Pink Plastic · Salty in Law · Cherry Wine · Trophy Wife · Wife Me Up. From nude rose to burnt terracotta and wine.",
-      },
-    ],
+    description: "A glassy gloss balm with a 6-hour soft stain and Cera-shine Tech.",
+    cover: kv("glasstick", 0, "Ink Like Air Glasstick campaign visual"),
   },
+];
+
+export type Campaign = {
+  slug: string;
+  name: string;
+  partner: string;
+  tagline: string;
+  intro: string;
+  concept: string;
+  featuredProducts: string[];
+  /** Figures as published on the campaign's own website. */
+  stats?: { value: string; label: string }[];
+  href: string;
+  keyVisual: Img;
+  gallery: Img[];
+};
+
+/** Add new collaborations to this list; each renders as its own campaign block. */
+export const campaigns: Campaign[] = [
   {
     slug: "sashfir",
-    number: "07",
     name: "A Touch of Sashfir",
-    category: "Collaboration",
-    tagline: "Mad For Makeup × Sashfir. Blood for love. Bold for confidence.",
-    link: { href: "https://s.madformakeup.co/", label: "See the campaign site" },
+    partner: "Sashfir",
+    tagline: "Blood for love. Bold for confidence.",
+    intro:
+      "A collaboration between Mad For Makeup and Sashfir. Most collaborations borrow a name; this one took two years of Sashfir's work, from the lab to the product cap.",
+    concept:
+      "It began with Sashfir listening to fans: eyeliner that slides off oily lids, lip colours that dry out lips. Red was chosen as a message that we hear them. Blood & Bold.",
+    featuredProducts: ["Skin tint", "Lip liner", "Lip cream", "Eyeliner"],
     stats: [
       { value: "2", label: "years from first sample to launch" },
       { value: "200", label: "people on the test panel" },
       { value: "300+", label: "packaging samples, all kept" },
       { value: "400", label: "design hours in every product" },
     ],
-    details: [
-      {
-        label: "Two years. One standard.",
-        body: "Most collaborations borrow a name. This one took two years of Sashfir's work, from the lab to the product cap.",
-      },
-      {
-        label: "Blood & Bold",
-        body: "It began with Sashfir listening to fans: eyeliner that slides off oily lids, lip colours that dry out lips. Red was chosen as a message that we hear them.",
-      },
-      {
-        label: "Sashfir's 4 favourites",
-        body: "A skin tint, a lip liner, a lip cream and an eyeliner.",
-      },
-      {
-        label: "The Sashfir Standard",
-        body: "Every item is tested by a 200-person panel, in daily use and in the lab. No compromises. Not even on a single brush tip.",
-      },
-      {
-        label: "Special gift",
-        body: "A free pouch and brush with purchase (T&Cs apply). The brush has a small well at its centre that holds skin tint.",
-      },
-    ],
+    href: "https://s.madformakeup.co/",
+    keyVisual: kv("sashfir", 1, "A Touch of Sashfir key visual"),
+    gallery: [0, 2, 4, 6, 8, 10, 11, 13, 17].map((i) => kv("sashfir", i, `A Touch of Sashfir campaign visual ${i}`)),
   },
 ];
 
-// Glass Blush packshot files are suffixed with shade codes. Verified by eye against the swatches.
-const BLUSH_SHADES: { code: string; name: string }[] = [
-  { code: "rq", name: "Rose Quartz" },
-  { code: "pa", name: "Pink Amethyst" },
-  { code: "mr", name: "Moon Rose" },
-  { code: "rj", name: "Red Jasper" },
-  { code: "cc", name: "Coco Quartz" },
-];
-
-function blushPack(): Img[] {
-  const all = toImgs("glass-blush", "pack", "Glass Blush");
-  const generic = all.filter((i) => !/applicator-(rq|pa|mr|rj|cc)\.webp$/.test(i.src));
-  const shades = BLUSH_SHADES.flatMap(({ code, name }) => {
-    const img = all.find((i) => i.src.endsWith(`applicator-${code}.webp`));
-    return img ? [{ ...img, alt: `Long Lasting Glass Blush in ${name}`, caption: name }] : [];
-  });
-  return [...generic, ...shades];
-}
-
-// Sashfir campaign leads the list; numbering follows display order.
-const ordered = [...defs].sort((a, b) => Number(b.slug === "sashfir") - Number(a.slug === "sashfir"));
-
-export const products: Product[] = ordered.map((d, i) => ({
-  ...d,
-  number: String(i + 1).padStart(2, "0"),
-  kv: toImgs(d.slug, "kv", d.name),
-  pack: d.slug === "glass-blush" ? blushPack() : toImgs(d.slug, "pack", d.name),
-}));
-
-export const HERO_IMAGE = products.find((p) => p.slug === "glasstick")!.kv.find((i) => i.src.includes("bride-moge-kv-1-img-9904")) ?? products[0].kv[0];
-export const EMAIL = "mad.natasya@gmail.com";
-export const INSTAGRAM = "https://instagram.com/madformakeup.co";
+const heroIndex = Math.max(
+  0,
+  m.glasstick.kv.findIndex((f) => f.file.startsWith("bride-moge-kv-1-img-9904")),
+);
+export const HERO_IMAGE = kv("glasstick", heroIndex, "Mad For Makeup campaign visual");
