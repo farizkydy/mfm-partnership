@@ -62,6 +62,9 @@ export default function SwipeGallery({
               className={fit === "contain" ? "object-contain p-6" : "object-cover"}
               loading={i < 2 ? "eager" : "lazy"}
             />
+            {img.caption && (
+              <span className="label absolute bottom-3 left-4 !text-ink">{img.caption}</span>
+            )}
           </li>
         ))}
       </ul>

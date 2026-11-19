@@ -68,18 +68,20 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.1}>
               <div className="max-w-xl space-y-6 text-lg text-silver-500">
-                {/* Brand line from the Product Knowledge deck cover. Longer brand story still to be supplied. */}
                 <p>
-                  Acne safe never looked this good. Mad For Makeup makes face, cheek and lip products that care for
-                  your skin and still deliver bold colour, from pearl-finish coverage to glass-finish lips.
+                  Mad For Makeup is an Indonesian makeup brand built on the belief that makeup should never come
+                  with rules or limitations.
                 </p>
                 <p>
-                  This page is the starting point for brands and creators who want to build something with us. Browse
-                  the range, see how we collaborate and tell us your idea.
+                  We create innovative, high-performance, acne-safe makeup designed for real skin, real people, and
+                  real life. We believe everyone deserves to feel confident in their own skin because, well,
+                  everyone gets acne.
                 </p>
-                <p className="label !text-ink">
-                  {products.length} products · One community · Rebel Secret Society
+                <p>
+                  We&apos;re here to challenge beauty norms, make makeup more inclusive, and encourage everyone to
+                  express themselves unapologetically.
                 </p>
+                <p className="label !text-ink">Acne-safe · Inclusive · Unapologetic</p>
               </div>
             </Reveal>
           </div>

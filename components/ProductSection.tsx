@@ -25,6 +25,26 @@ export default function ProductSection({ product }: { product: Product }) {
                 {product.name}
               </h3>
               <p className="mt-6 max-w-md text-lg text-silver-500">{product.tagline}</p>
+              {product.link && (
+                <a
+                  href={product.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label mt-6 inline-block hover:text-maroon"
+                >
+                  {product.link.label} ↗
+                </a>
+              )}
+              {product.stats && (
+                <dl className="mt-10 grid max-w-md grid-cols-2 gap-6">
+                  {product.stats.map((s) => (
+                    <div key={s.label}>
+                      <dt className="display text-5xl text-maroon">{s.value}</dt>
+                      <dd className="label mt-1">{s.label}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
 
             <ul className="self-end divide-y divide-silver-300 border-y border-silver-300">

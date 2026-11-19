@@ -1,6 +1,6 @@
 import manifest from "./manifest.json";
 
-export type Img = { src: string; w: number; h: number; alt: string };
+export type Img = { src: string; w: number; h: number; alt: string; caption?: string };
 
 export type Product = {
   slug: string;
@@ -8,8 +8,10 @@ export type Product = {
   name: string;
   category: string;
   tagline: string;
-  /** Source: "Product Knowledge_Updated June 2026" deck (Sashfir is not in the deck: placeholder). */
+  /** Source: "Product Knowledge_Updated June 2026" deck; Sashfir from s.madformakeup.co. */
   details: { label: string; body: string }[];
+  stats?: { value: string; label: string }[];
+  link?: { href: string; label: string };
   kv: Img[];
   pack: Img[];
   featuredPack?: string;
@@ -144,21 +146,64 @@ const defs: Omit<Product, "kv" | "pack">[] = [
   {
     slug: "sashfir",
     number: "07",
-    name: "Sashfir",
+    name: "A Touch of Sashfir",
     category: "Collaboration",
-    tagline: "Mad For Makeup × Sashfir: a collaboration campaign.",
+    tagline: "Mad For Makeup × Sashfir. Blood for love. Bold for confidence.",
+    link: { href: "https://s.madformakeup.co/", label: "See the campaign site" },
+    stats: [
+      { value: "2", label: "years from first sample to launch" },
+      { value: "200", label: "people on the test panel" },
+      { value: "300+", label: "packaging samples, all kept" },
+      { value: "400", label: "design hours in every product" },
+    ],
     details: [
-      // PLACEHOLDER: Sashfir is not covered in the Product Knowledge deck.
-      { label: "What it is", body: "A co-branded campaign with a full set of key visuals." },
-      { label: "Collab angle", body: "Reference case for brand partnerships." },
+      {
+        label: "Two years. One standard.",
+        body: "Most collaborations borrow a name. This one took two years of Sashfir's work, from the lab to the product cap.",
+      },
+      {
+        label: "Blood & Bold",
+        body: "It began with Sashfir listening to fans: eyeliner that slides off oily lids, lip colours that dry out lips. Red was chosen as a message that we hear them.",
+      },
+      {
+        label: "Sashfir's 4 favourites",
+        body: "A skin tint, a lip liner, a lip cream and an eyeliner.",
+      },
+      {
+        label: "The Sashfir Standard",
+        body: "Every item is tested by a 200-person panel, in daily use and in the lab. No compromises. Not even on a single brush tip.",
+      },
+      {
+        label: "Special gift",
+        body: "A free pouch and brush with purchase (T&Cs apply). The brush has a small well at its centre that holds skin tint.",
+      },
     ],
   },
 ];
 
+// Glass Blush packshot files are suffixed with shade codes. Verified by eye against the swatches.
+const BLUSH_SHADES: { code: string; name: string }[] = [
+  { code: "rq", name: "Rose Quartz" },
+  { code: "pa", name: "Pink Amethyst" },
+  { code: "mr", name: "Moon Rose" },
+  { code: "rj", name: "Red Jasper" },
+  { code: "cc", name: "Coco Quartz" },
+];
+
+function blushPack(): Img[] {
+  const all = toImgs("glass-blush", "pack", "Glass Blush");
+  const generic = all.filter((i) => !/applicator-(rq|pa|mr|rj|cc)\.webp$/.test(i.src));
+  const shades = BLUSH_SHADES.flatMap(({ code, name }) => {
+    const img = all.find((i) => i.src.endsWith(`applicator-${code}.webp`));
+    return img ? [{ ...img, alt: `Long Lasting Glass Blush in ${name}`, caption: name }] : [];
+  });
+  return [...generic, ...shades];
+}
+
 export const products: Product[] = defs.map((d) => ({
   ...d,
   kv: toImgs(d.slug, "kv", d.name),
-  pack: toImgs(d.slug, "pack", d.name),
+  pack: d.slug === "glass-blush" ? blushPack() : toImgs(d.slug, "pack", d.name),
 }));
 
 export const HERO_IMAGE = products.find((p) => p.slug === "glasstick")!.kv.find((i) => i.src.includes("bride-moge-kv-1-img-9904")) ?? products[0].kv[0];
