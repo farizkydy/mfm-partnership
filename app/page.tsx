@@ -13,19 +13,6 @@ const h2 = "display text-5xl md:text-7xl";
 const button =
   "inline-block px-8 py-4 text-sm uppercase tracking-[0.18em] transition";
 
-/**
- * Grid cell spans so the last row always fills the width (no empty cell showing the divider colour).
- * Desktop uses 6 columns: rows of 3 (span 2), a trailing pair spans 3 each, a lone item spans all 6.
- * Tablet uses 2 columns: a lone last item spans both. Full class names so Tailwind can see them.
- */
-function spanClass(i: number, n: number) {
-  const rest = n % 3;
-  const lastRow = i >= n - (rest || 3);
-  const desktop = !lastRow || rest === 0 ? "lg:col-span-2" : rest === 2 ? "lg:col-span-3" : "lg:col-span-6";
-  const tablet = n % 2 === 1 && i === n - 1 ? "sm:col-span-2" : "";
-  return `${tablet} ${desktop}`;
-}
-
 export default function Home() {
   return (
     <>
@@ -92,9 +79,9 @@ export default function Home() {
                 Why partner <em>with Mad?</em>
               </h2>
             </Reveal>
-            <ul className="mt-16 grid gap-px bg-silver-300 sm:grid-cols-2 lg:grid-cols-6">
+            <ul className="mt-16 grid gap-px bg-silver-300 sm:grid-cols-2 lg:grid-cols-3">
               {whyPartner.map((w, i) => (
-                <li key={w.title} className={`bg-paper p-8 md:p-10 ${spanClass(i, whyPartner.length)}`}>
+                <li key={w.title} className="bg-paper p-8">
                   <Reveal delay={(i % 3) * 0.08}>
                     {w.stat && <p className="display text-5xl text-maroon">{w.stat}</p>}
                     <h3 className="display text-2xl md:text-3xl">{w.title}</h3>

@@ -28,8 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${serif.variable} antialiased`}>
-      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject attributes into <body>. */}
-      <body className="min-h-screen" suppressHydrationWarning>{children}</body>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }
