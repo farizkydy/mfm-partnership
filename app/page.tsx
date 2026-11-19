@@ -1,69 +1,169 @@
 import Image from "next/image";
+import CollabForm from "@/components/CollabForm";
+import Header from "@/components/Header";
+import ProductSection from "@/components/ProductSection";
+import Reveal from "@/components/Reveal";
+import { EMAIL, HERO_IMAGE, INSTAGRAM, products } from "@/lib/products";
+
+const tracks = [
+  {
+    title: "Brand collaboration",
+    points: [
+      "Co-branded product and limited-edition drops",
+      "Joint campaigns with shared key visuals",
+      "Retail and event activations",
+    ],
+  },
+  {
+    title: "Influencer collaboration",
+    points: [
+      "Product seeding and honest first-look content",
+      "Shade-match and tutorial features",
+      "Community access through Rebel Secret Society",
+    ],
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <>
+      <Header />
+      <main id="top">
+        {/* 01 Hero */}
+        <section className="relative grid min-h-screen md:grid-cols-2">
+          <div className="flex flex-col justify-end px-5 pb-16 pt-32 md:px-10">
+            <p className="label">01 · Partnerships</p>
+            <h1 className="display mt-6 text-6xl md:text-8xl">
+              Mad for makeup.
+              <br />
+              Made for <em>partnership.</em>
+            </h1>
+            <p className="mt-8 max-w-md text-lg text-silver-500">
+              Explore the brand, the lineup and the ways we work with big brands and creators.
+            </p>
+            <a href="#about" className="label mt-10 hover:text-maroon">
+              Find out more ↓
+            </a>
+          </div>
+          <div className="relative min-h-[60vh] bg-silver-100">
             <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+              src={HERO_IMAGE.src}
+              alt={HERO_IMAGE.alt}
+              fill
+              priority
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+          </div>
+        </section>
+
+        {/* 02 About */}
+        <section id="about" className="scroll-mt-16 bg-silver-50 py-24 md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-12 px-5 md:grid-cols-[1fr_1.4fr] md:px-10">
+            <Reveal>
+              <p className="label">02 · The brand</p>
+              <h2 className="display mt-4 text-5xl md:text-7xl">
+                Bold, minimal, <em>unapologetically</em> makeup.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="max-w-xl space-y-6 text-lg text-silver-500">
+                {/* Brand line from the Product Knowledge deck cover. Longer brand story still to be supplied. */}
+                <p>
+                  Acne safe never looked this good. Mad For Makeup makes face, cheek and lip products that care for
+                  your skin and still deliver bold colour, from pearl-finish coverage to glass-finish lips.
+                </p>
+                <p>
+                  This page is the starting point for brands and creators who want to build something with us. Browse
+                  the range, see how we collaborate and tell us your idea.
+                </p>
+                <p className="label !text-ink">
+                  {products.length} products · One community · Rebel Secret Society
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* 03 Products */}
+        <section id="products" className="scroll-mt-16 pt-24 md:pt-32">
+          <div className="mx-auto max-w-7xl px-5 pb-16 md:px-10">
+            <Reveal>
+              <p className="label">03 · Products</p>
+              <h2 className="display mt-4 text-5xl md:text-7xl">
+                The <em>lineup.</em>
+              </h2>
+            </Reveal>
+          </div>
+          {products.map((p) => (
+            <ProductSection key={p.slug} product={p} />
+          ))}
+        </section>
+
+        {/* 04 Engagement */}
+        <section id="engagement" className="scroll-mt-16 bg-ink py-24 text-white md:py-32">
+          <div className="mx-auto max-w-7xl px-5 md:px-10">
+            <Reveal>
+              <p className="label">04 · Engagement</p>
+              <h2 className="display mt-4 text-5xl md:text-7xl">
+                Ways to <em className="!text-silver-300">work together.</em>
+              </h2>
+            </Reveal>
+            <div className="mt-16 grid gap-px bg-white/20 md:grid-cols-2">
+              {tracks.map((t, i) => (
+                <Reveal key={t.title} delay={i * 0.1} className="bg-ink p-8 md:p-12">
+                  <h3 className="display text-3xl md:text-4xl">{t.title}</h3>
+                  <ul className="mt-8 space-y-4 text-silver-300">
+                    {t.points.map((p) => (
+                      <li key={p} className="flex gap-3">
+                        <span aria-hidden className="text-silver-500">+</span>
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 05 Collab */}
+        <section id="collab" className="scroll-mt-16 py-24 md:py-32">
+          <div className="mx-auto grid max-w-7xl gap-16 px-5 md:grid-cols-[1fr_1.1fr] md:px-10">
+            <Reveal>
+              <p className="label">05 · Let&apos;s collaborate</p>
+              <h2 className="display mt-4 text-5xl md:text-7xl">
+                Let&apos;s work <em>together.</em>
+              </h2>
+              <p className="mt-6 max-w-md text-lg text-silver-500">
+                Tell us who you are and what you have in mind. You can also write to{" "}
+                <a className="text-ink underline underline-offset-4 hover:text-maroon" href={`mailto:${EMAIL}`}>
+                  {EMAIL}
+                </a>
+                .
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <CollabForm />
+            </Reveal>
+          </div>
+        </section>
       </main>
-    </div>
+
+      {/* 06 Footer */}
+      <footer className="border-t border-silver-300 px-5 py-10 md:px-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
+          <p className="display text-2xl">Mad For Makeup</p>
+          <nav aria-label="Social" className="flex gap-6">
+            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="label hover:text-maroon">
+              Instagram @madformakeup.co
+            </a>
+            <a href="https://madformakeup.co" className="label hover:text-maroon">
+              madformakeup.co
+            </a>
+          </nav>
+        </div>
+      </footer>
+    </>
   );
 }
