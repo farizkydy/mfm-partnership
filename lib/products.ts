@@ -83,6 +83,8 @@ export type Campaign = {
   stats?: { value: string; label: string }[];
   href: string;
   keyVisual: Img;
+  /** Portrait crop used under the sm breakpoint; falls back to keyVisual. */
+  keyVisualMobile?: Img;
   gallery: Img[];
 };
 
@@ -97,7 +99,13 @@ export const campaigns: Campaign[] = [
       "A collaboration between Mad For Makeup and Sashfir. Most collaborations borrow a name; this one took two years of Sashfir's work, from the lab to the product cap.",
     concept:
       "It began with Sashfir listening to fans: eyeliner that slides off oily lids, lip colours that dry out lips. Red was chosen as a message that we hear them. Blood & Bold.",
-    featuredProducts: ["Skin tint", "Lip liner", "Lip cream", "Eyeliner"],
+    // Names as listed on s.madformakeup.co (no shades).
+    featuredProducts: [
+      "Pearlfect Cover Skin Tint · Mini",
+      "DEFINILIP Blur Cover + Lip Liner",
+      "Glass Cream Glossy Lip Cream",
+      "INKTense Dusk Till Dawn Eyeliner",
+    ],
     stats: [
       { value: "2", label: "years from first sample to launch" },
       { value: "200", label: "people on the test panel" },
@@ -106,6 +114,7 @@ export const campaigns: Campaign[] = [
     ],
     href: "https://s.madformakeup.co/",
     keyVisual: kv("sashfir", 1, "A Touch of Sashfir key visual"),
+    keyVisualMobile: kv("sashfir", 2, "A Touch of Sashfir key visual"),
     gallery: [0, 2, 4, 6, 8, 10, 11, 13, 17].map((i) => kv("sashfir", i, `A Touch of Sashfir campaign visual ${i}`)),
   },
 ];

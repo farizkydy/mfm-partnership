@@ -47,20 +47,10 @@ export default function Home() {
         </section>
 
         {/* Collaborations */}
-        <section id="collaborations" className="scroll-mt-16 py-24 md:py-32">
-          <div className={wrap}>
-            <Reveal className="mb-16">
-              <h2 className={h2}>
-                Featured <em>collaboration.</em>
-              </h2>
-              <p className="mt-6 max-w-xl text-lg text-silver-500">
-                A look at what Mad can build with the right partner.
-              </p>
-            </Reveal>
-            {campaigns.map((c) => (
-              <CampaignSection key={c.slug} campaign={c} />
-            ))}
-          </div>
+        <section id="collaborations" aria-label="Featured collaboration">
+          {campaigns.map((c) => (
+            <CampaignSection key={c.slug} campaign={c} />
+          ))}
         </section>
 
         {/* About */}
