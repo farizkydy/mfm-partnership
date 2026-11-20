@@ -59,7 +59,7 @@ export default function Header() {
 
         <nav aria-label="Primary" className="ml-auto hidden items-center gap-6 lg:flex">
           {nav.slice(1).map((l) => (
-            <a key={l.href} href={l.href} className="label !text-ink hover:!text-red">
+            <a key={l.href} href={l.href} className={`label ${scrolled ? "!text-ink hover:!text-red" : "!text-white hover:!text-ink"}`}>
               {l.label}
             </a>
           ))}
@@ -68,7 +68,7 @@ export default function Header() {
         <div className="flex items-center gap-3 sm:gap-4">
           <a
             href="#collab"
-            className="btn btn-red whitespace-nowrap !px-3 !py-2.5 !text-[0.6rem] !tracking-[0.1em] sm:!px-4 sm:!text-[0.68rem] sm:!tracking-[0.18em]"
+            className={`btn ${scrolled ? "btn-red" : "btn-white"} whitespace-nowrap !px-3 !py-2.5 !text-[0.6rem] !tracking-[0.1em] sm:!px-4 sm:!text-[0.68rem] sm:!tracking-[0.18em]`}
           >
             Let&apos;s Collaborate
           </a>
@@ -76,9 +76,9 @@ export default function Header() {
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="menu-overlay"
-            className="label relative z-50 !text-ink lg:hidden"
+            className={`label relative z-50 lg:hidden ${open || !scrolled ? "!text-white" : "!text-ink"}`}
           >
-            {open ? <span className="!text-white">Close</span> : "Menu"}
+            {open ? "Close" : "Menu"}
           </button>
         </div>
       </header>

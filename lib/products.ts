@@ -43,6 +43,7 @@ export const products: Product[] = [
     category: "Face / Complexion",
     description: "A hi-cover cushion for combination skin, with oil control and a dual-sided puff.",
     cover: kv("pearlfit-cushion", 9, "Pearlfect Skin-Fit Cushion campaign visual"),
+    cover2: kv("pearlfit-cushion", 4, "Model with a sword in a satin gown, Pearlfect campaign"),
   },
   {
     slug: "silk-fit-concealer",
@@ -58,6 +59,7 @@ export const products: Product[] = [
     category: "Face / Complexion",
     description: "An 8-hour pearlfect cover tint that meets oil control, with skin-barrier care.",
     cover: kv("skintint", 3, "Pearl-Fect Cover Skintint campaign visual"),
+    cover2: kv("skintint", 2, "Model holding an oyster of pearls, Skintint campaign"),
   },
   {
     slug: "glass-blush",
@@ -65,6 +67,7 @@ export const products: Product[] = [
     category: "Face / Complexion",
     description: "A glow-glass finish blush with primer-like tech for a natural, luminous flush.",
     cover: kv("glass-blush", 2, "Long Lasting Glass Blush campaign visual"),
+    cover2: kv("glass-blush", 0, "Model in a blonde curled wig winking, Glass Blush campaign"),
   },
   {
     slug: "glass-oil",
@@ -72,6 +75,7 @@ export const products: Product[] = [
     category: "Lips",
     description: "The first lip oil to cover dark and chapped lips with a glossy, non-sticky finish.",
     cover: kv("glass-oil", 2, "Tinted Glass H2Oil campaign visual"),
+    cover2: kv("glass-oil", 6, "Tinted Glass H2Oil still life with an anthurium"),
   },
 ];
 
@@ -125,5 +129,8 @@ export const campaigns: Campaign[] = [
 
 /** Hero collage: a colour portrait plus a smaller black-and-white crop. */
 export const HERO_IMAGE = kv("glasstick", 0, "Bride with a red lip, Mad For Makeup campaign");
-export const HERO_IMAGE_2 = kv("skintint", 7, "Close-up beauty portrait, Mad For Makeup campaign");
-export const ABOUT_IMAGE = kv("silk-fit-concealer", 8, "Mad For Makeup campaign portrait");
+export const HERO_IMAGE_2 = kv("silk-fit-concealer", 5, "Model in a red headband holding a concealer, Mad For Makeup campaign");
+export const ABOUT_IMAGE = kv("silk-fit-concealer", 8, "Model mid-punch in a red headband, Mad For Makeup campaign");
+export const ABOUT_IMAGE_2 = kv("glass-blush", 0, "Model in a blonde curled wig winking, Mad For Makeup campaign");
+export const WHY_IMAGE = kv("glass-oil", 0, "Model hugging a corgi on a tennis court, Mad For Makeup campaign");
+export const WHY_IMAGE_2 = kv("glass-oil", 1, "Model holding a pink tennis ball, Mad For Makeup campaign");

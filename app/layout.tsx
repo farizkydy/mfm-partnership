@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Geist, Instrument_Serif } from "next/font/google";
+import { Anton, Bodoni_Moda, Geist } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -7,11 +7,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const serif = Instrument_Serif({
+const serif = Bodoni_Moda({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: "400",
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 const anton = Anton({

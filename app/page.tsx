@@ -5,19 +5,37 @@ import Header from "@/components/Header";
 import OpportunityCards from "@/components/OpportunityCards";
 import ProductGrid from "@/components/ProductGrid";
 import Reveal from "@/components/Reveal";
-import { ABOUT_IMAGE, campaigns, HERO_IMAGE, HERO_IMAGE_2 } from "@/lib/products";
+import { ABOUT_IMAGE, ABOUT_IMAGE_2, campaigns, HERO_IMAGE, HERO_IMAGE_2, WHY_IMAGE, WHY_IMAGE_2 } from "@/lib/products";
 import { about, contact, EMAIL, footer, hero, OFFICIAL_SITE, SOCIALS, steps, whyPartner } from "@/lib/site";
 
 const wrap = "mx-auto max-w-7xl px-5 md:px-10";
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Staggered, asymmetric placement for the four "why partner" themes (desktop).
-const whySlots = [
-  "md:col-span-5",
-  "md:col-span-5 md:col-start-8 md:mt-28",
-  "md:col-span-5 md:col-start-2",
-  "md:col-span-5 md:col-start-8 md:mt-28",
-];
+const ticker = ["Bold", "Playful", "Rebellious", "Unconventional", "Acne-safe", "Made in Indonesia"];
+
+function Marquee() {
+  const row = (
+    <>
+      {ticker.map((t, i) => (
+        <span key={t} className="display flex shrink-0 items-center gap-8 pr-8 text-[clamp(2rem,5vw,4.5rem)] italic md:gap-14 md:pr-14">
+          {t}
+          <span className="not-italic text-red" aria-hidden>
+            ✺
+          </span>
+        </span>
+      ))}
+    </>
+  );
+  return (
+    <div className="marquee overflow-hidden bg-ink py-4 text-white md:py-6" role="presentation">
+      <div className="marquee-track" aria-hidden>
+        {row}
+        {row}
+      </div>
+      <p className="sr-only">Bold, playful, rebellious, unconventional.</p>
+    </div>
+  );
+}
 
 export default function Home() {
   const [primary, ...others] = campaigns;
@@ -26,74 +44,75 @@ export default function Home() {
     <>
       <Header />
       <main id="top">
-        {/* Hero: oversized wordmark + offset photo collage */}
-        <section id="hero" className="relative px-5 pb-20 pt-24 md:px-10 md:pb-28 md:pt-28">
-          <div className="mx-auto max-w-[110rem]">
-            {/* Logo asset is white: brightness-0 turns it black on the light page. */}
+        {/* Hero: a magazine spread. Red field with poster type, tall campaign photo, a second frame overlapping the seam. */}
+        <section id="hero" className="relative flex flex-col overflow-hidden bg-red text-white md:block md:min-h-[100svh]">
+          {/* Photo column (below the type on mobile) */}
+          <div className="relative order-2 mt-10 h-[78svh] md:absolute md:inset-y-0 md:right-0 md:mt-0 md:h-auto md:w-[36%]">
             <Image
-              src="/logo.png"
-              alt="Mad For Makeup"
-              width={1400}
-              height={105}
+              src={HERO_IMAGE.src}
+              alt={HERO_IMAGE.alt}
+              fill
               priority
-              className="h-auto w-full brightness-0"
+              sizes="(min-width: 768px) 36vw, 100vw"
+              className="object-cover object-[50%_30%]"
             />
+            <p
+              className="label absolute right-4 top-1/2 hidden -translate-y-1/2 !text-white md:block [writing-mode:vertical-rl]"
+              aria-hidden
+            >
+              Bold · Playful · Rebellious · Unconventional
+            </p>
 
-            <div className="mt-10 grid gap-12 md:mt-16 md:grid-cols-12 md:gap-8">
-              <div className="flex flex-col justify-between gap-10 md:col-span-6">
-                <h1 className="display display-lg">
-                  {hero.headline} <em>{hero.accent}</em>
-                </h1>
-                <div>
-                  <p className="max-w-md text-lg text-mute">{hero.copy}</p>
-                  <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-                    <a href="#collab" className="btn btn-red">
-                      Let&apos;s Collaborate
-                    </a>
-                    <a href="#collaborations" className="link-line">
-                      Explore Mad ↓
-                    </a>
-                  </div>
-                </div>
+            {/* Second frame: sits on the photo on mobile, straddles the red/photo seam on desktop */}
+            <div className="absolute bottom-6 left-5 z-20 w-[36%] -rotate-[3deg] border-[6px] border-paper shadow-2xl md:bottom-auto md:left-[-27%] md:top-[26svh] md:w-[42%] md:border-8">
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-sand">
+                <Image
+                  src={HERO_IMAGE_2.src}
+                  alt={HERO_IMAGE_2.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 15vw, 36vw"
+                  className="object-cover"
+                />
               </div>
+            </div>
+          </div>
 
-              <div className="relative aspect-[5/6] md:col-span-6 md:aspect-auto md:h-[clamp(440px,58vh,640px)]">
-                {/* Outer box carries the crop marks (must not clip); inner box clips the photo. */}
-                <div className="crop absolute left-0 top-0 aspect-[4/5] w-[70%] bg-sand md:h-[88%] md:w-auto">
-                  <div className="relative h-full w-full overflow-hidden">
-                    <Image
-                      src={HERO_IMAGE.src}
-                      alt={HERO_IMAGE.alt}
-                      fill
-                      priority
-                      sizes="(min-width: 768px) 30vw, 70vw"
-                      className="object-cover"
-                    />
-                  </div>
+          {/* Type column */}
+          <div className="relative z-10 order-1 flex flex-col px-5 pt-24 md:min-h-[100svh] md:w-[68%] md:px-10 md:pb-12 md:pt-28">
+            {/* Logo asset is white, which is what we want on the red field. */}
+            <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} priority className="h-auto w-[min(100%,22rem)]" />
+
+            <h1 className="display display-2xl mt-10 md:mt-auto">
+              <span className="block">Made</span>
+              <span className="block italic md:ml-[14%]">in</span>
+              <span className="block">Indonesia.</span>
+            </h1>
+
+            <div className="mt-8 grid gap-8 md:mt-12 md:grid-cols-[1.1fr_1fr] md:items-end md:gap-10">
+              <p className="display text-[clamp(1.6rem,3vw,2.75rem)] italic leading-[1.05]">{hero.accent}</p>
+              <div>
+                <p className="max-w-md text-base text-white/90 md:max-w-[22rem] md:text-lg">{hero.copy}</p>
+                <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+                  <a href="#collab" className="btn btn-white">
+                    Let&apos;s Collaborate
+                  </a>
+                  <a href="#collaborations" className="link-line">
+                    Explore Mad ↓
+                  </a>
                 </div>
-                <div className="absolute bottom-0 right-0 aspect-[3/4] w-[44%] overflow-hidden border-[6px] border-paper bg-sand md:h-[64%] md:w-auto md:border-8">
-                  <Image
-                    src={HERO_IMAGE_2.src}
-                    alt={HERO_IMAGE_2.alt}
-                    fill
-                    priority
-                    sizes="(min-width: 768px) 20vw, 44vw"
-                    className="mono-img object-cover"
-                  />
-                </div>
-                <p className="num absolute right-0 top-0 text-5xl text-red md:text-7xl" aria-hidden>
-                  01
-                </p>
               </div>
             </div>
           </div>
         </section>
 
+        <Marquee />
+
         {/* Sashfir takeover: first major visual after the hero */}
         <section id="collaborations" aria-label="Featured collaboration">
           <CampaignSection campaign={primary} index={0} />
           {others.length > 0 && (
-            <div className={`${wrap} pb-24`}>
+            <div className={`${wrap} py-24`}>
               <ul className="grid gap-10 md:grid-cols-3">
                 {others.map((c, i) => (
                   <li key={c.slug}>
@@ -105,69 +124,128 @@ export default function Home() {
           )}
         </section>
 
-        {/* About: editorial spread with pull quote */}
-        <section id="about" className="scroll-mt-16 py-24 md:py-32">
-          <div className={`${wrap} grid gap-14 md:grid-cols-12`}>
-            <Reveal className="md:col-span-7">
-              <h2 className="display display-xl">
-                {about.quote} <em>{about.quoteAccent}</em>
-              </h2>
-              <p className="display display-md mt-8 max-w-xl">{about.quoteSub}</p>
-              <div className="mt-12 max-w-md space-y-5 text-mute">
-                {about.paragraphs.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
+        {/* About: a poster. Headline blends over the photographs (difference) so it stays legible on any frame. */}
+        <section id="about" className="relative scroll-mt-16 overflow-hidden bg-paper py-24 md:py-40">
+          <div className="mx-auto max-w-[110rem] px-5 md:px-10">
+            <div className="relative md:min-h-[60vw] xl:min-h-[52rem]">
+              {/* Main photo, right */}
+              <div className="relative ml-auto aspect-[4/5] w-[78%] md:absolute md:right-0 md:top-0 md:w-[44%]">
+                <Image
+                  src={ABOUT_IMAGE.src}
+                  alt={ABOUT_IMAGE.alt}
+                  fill
+                  sizes="(min-width: 768px) 44vw, 78vw"
+                  className="object-cover"
+                  loading="lazy"
+                />
               </div>
-            </Reveal>
-            <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:mt-32">
-              <div className="crop relative aspect-[3/4] bg-sand">
-                <div className="zoom relative h-full w-full overflow-hidden">
+              {/* Second photo, low-left, overlapping */}
+              <div className="relative -mt-24 w-[46%] border-[6px] border-paper md:absolute md:bottom-6 md:left-[8%] md:mt-0 md:w-[22%] md:border-8">
+                <div className="relative aspect-[3/4] w-full">
                   <Image
-                    src={ABOUT_IMAGE.src}
-                    alt={ABOUT_IMAGE.alt}
+                    src={ABOUT_IMAGE_2.src}
+                    alt={ABOUT_IMAGE_2.alt}
                     fill
-                    sizes="(min-width: 768px) 30vw, 100vw"
+                    sizes="(min-width: 768px) 22vw, 46vw"
                     className="object-cover"
                     loading="lazy"
                   />
                 </div>
               </div>
-            </Reveal>
+
+              <h2 className="display display-2xl pointer-events-none absolute left-0 top-0 hidden !text-white mix-blend-difference md:block">
+                <span className="block">Everyone</span>
+                <span className="block md:ml-[8%]">gets</span>
+                <span className="block italic md:ml-[24%]">acne.</span>
+              </h2>
+              <h2 className="display display-2xl mt-10 md:hidden">
+                {about.quote} <em>{about.quoteAccent}</em>
+              </h2>
+            </div>
+
+            <div className="mt-16 grid gap-12 md:-mt-6 md:grid-cols-12 md:gap-8">
+              <Reveal className="md:col-span-5 md:col-start-1">
+                <div className="flex items-end gap-4 border-t border-ink pt-4">
+                  <span className="num text-[clamp(8rem,18vw,16rem)] text-red">0</span>
+                  <span className="label mb-6 !text-ink">Rules.<br />Zero limits.</span>
+                </div>
+              </Reveal>
+              <Reveal delay={0.1} className="md:col-span-6 md:col-start-7 md:pt-4">
+                <p className="display display-md">{about.quoteSub}</p>
+                <div className="mt-8 grid gap-5 text-mute md:grid-cols-2 md:gap-8">
+                  {about.paragraphs.map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
+                </div>
+              </Reveal>
+            </div>
           </div>
         </section>
 
-        {/* Why partner: big numerals, staggered layout */}
-        <section id="why" className="scroll-mt-16 bg-sand py-24 md:py-28">
-          <div className={wrap}>
+        {/* Why partner: dark spread, sticky campaign photo, huge hollow numerals that fill on hover */}
+        <section id="why" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
+          <div className="mx-auto max-w-[110rem] px-5 md:px-10">
             <Reveal>
-              <h2 className="display display-lg">
-                Why partner <em>with Mad?</em>
+              <h2 className="display display-2xl !text-[clamp(3.4rem,13vw,13rem)]">
+                Why partner <em className="block md:ml-[12%]">with Mad?</em>
               </h2>
             </Reveal>
-            <ul className="mt-16 grid gap-14 md:mt-24 md:grid-cols-12 md:gap-x-6 md:gap-y-12">
-              {whyPartner.map((w, i) => (
-                <li key={w.label} className={whySlots[i % whySlots.length]}>
-                  <Reveal delay={(i % 2) * 0.08}>
-                    <div className="border-t border-ink pt-5">
-                      <p className="num text-[clamp(4.5rem,9vw,7.5rem)] text-red">{w.stat ?? pad(i + 1)}</p>
-                      <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.18em]">{w.label}</h3>
-                      <p className="mt-3 max-w-sm text-lg text-mute">{w.body}</p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
+
+            <div className="mt-16 grid gap-14 md:mt-28 md:grid-cols-12 md:gap-8">
+              <div className="relative md:sticky md:top-24 md:col-span-5 md:self-start">
+                <div className="relative aspect-[4/5] w-[88%]">
+                  <Image
+                    src={WHY_IMAGE.src}
+                    alt={WHY_IMAGE.alt}
+                    fill
+                    sizes="(min-width: 768px) 38vw, 88vw"
+                    className="object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="relative -mt-24 ml-auto w-[48%] border-[6px] border-ink md:-mt-32 md:border-8">
+                  <div className="relative aspect-square w-full">
+                    <Image
+                      src={WHY_IMAGE_2.src}
+                      alt={WHY_IMAGE_2.alt}
+                      fill
+                      sizes="(min-width: 768px) 18vw, 48vw"
+                      className="object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <ul className="md:col-span-7">
+                {whyPartner.map((w, i) => (
+                  <li key={w.label} className="group border-t border-white/30 py-8 md:py-12">
+                    <Reveal>
+                      <div className="grid items-start gap-4 md:grid-cols-[auto_1fr] md:gap-10">
+                        <p className="num num-outline-white text-[clamp(6rem,11vw,10rem)] transition-colors duration-500 group-hover:!text-red group-hover:![-webkit-text-stroke-color:var(--red)]">
+                          {w.stat ?? pad(i + 1)}
+                        </p>
+                        <div className="md:pt-4">
+                          <h3 className="display text-[clamp(2.2rem,4.5vw,4.5rem)] italic">{w.label}</h3>
+                          <p className="mt-4 max-w-md text-lg text-white/70">{w.body}</p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* Products: editorial spread */}
-        <section id="products" className="scroll-mt-16 py-24 md:py-32">
-          <div className={wrap}>
+        {/* Products: six spreads, each composed differently */}
+        <section id="products" className="scroll-mt-16 overflow-x-clip py-24 md:py-36">
+          <div className="mx-auto max-w-[96rem] px-5 md:px-10">
             <Reveal>
-              <h2 className="display display-lg">
-                What Mad <em>creates.</em>
+              <h2 className="display display-2xl !text-[clamp(3.4rem,13vw,13rem)]">
+                What Mad <em className="block md:ml-[18%]">creates.</em>
               </h2>
-              <p className="mt-6 max-w-md text-lg text-mute">
+              <p className="mt-8 max-w-md text-lg text-mute md:ml-[18%]">
                 An overview of our range. For full product details, visit our official website.
               </p>
             </Reveal>
@@ -176,11 +254,11 @@ export default function Home() {
         </section>
 
         {/* Partnership opportunities: typographic list */}
-        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-28">
-          <div className={wrap}>
+        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
+          <div className="mx-auto max-w-[110rem] px-5 md:px-10">
             <Reveal>
-              <h2 className="display display-lg">
-                Partnership <em>opportunities.</em>
+              <h2 className="display display-2xl !text-[clamp(3.2rem,12vw,12rem)]">
+                Partnership <em className="block md:ml-[14%]">opportunities.</em>
               </h2>
             </Reveal>
             <OpportunityCards />

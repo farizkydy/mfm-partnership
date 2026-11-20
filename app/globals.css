@@ -41,9 +41,9 @@ body {
 
 .display {
   font-family: var(--font-serif), serif;
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
 }
 .display em {
   color: var(--red);
@@ -55,6 +55,18 @@ body {
 .display-lg {
   font-size: clamp(2.75rem, 7.5vw, 6.5rem);
   line-height: 0.95;
+}
+/* Poster scale: used for the hero and campaign takeovers. */
+.display-2xl {
+  font-size: clamp(3.6rem, 17vw, 6rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .display-2xl {
+    font-size: clamp(6rem, 11.2vw, 13rem);
+  }
 }
 .display-md {
   font-size: clamp(2rem, 4.5vw, 3.75rem);
@@ -88,6 +100,37 @@ body {
     linear-gradient(var(--ink), var(--ink)) bottom left / 1px 14px no-repeat,
     linear-gradient(var(--ink), var(--ink)) bottom right / 14px 1px no-repeat,
     linear-gradient(var(--ink), var(--ink)) bottom right / 1px 14px no-repeat;
+}
+
+/* Outlined numerals: hollow Anton that fills on hover. */
+.num-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+  transition: color 0.4s;
+}
+.group:hover .num-outline,
+.num-outline:hover {
+  color: var(--red);
+  -webkit-text-stroke-color: var(--red);
+}
+
+/* Scrolling ticker. Static when motion is reduced. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track {
+    animation: marquee 38s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
 }
 
 .mono-img {
@@ -167,4 +210,16 @@ body {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* White hollow numerals for use on the red field. */
+.num-outline-white {
+  color: transparent;
+  -webkit-text-stroke: 2px #fff;
+}
+
+/* White crop marks for photos sitting on the red field. */
+.crop-white {
+  outline: 6px solid #fff;
+  outline-offset: 0;
 }

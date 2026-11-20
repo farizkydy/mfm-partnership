@@ -1,27 +1,21 @@
 import Image from "next/image";
 import type { Campaign } from "@/lib/products";
+import CampaignReel from "./CampaignReel";
 import ParallaxImage from "./ParallaxImage";
 import Reveal from "./Reveal";
-import SwipeGallery from "./SwipeGallery";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Asymmetric mosaic (desktop). Auto-placement fills a 12-col grid of mixed spans.
-const mosaic = [
-  "md:col-span-4 md:row-span-2",
-  "md:col-span-4",
-  "md:col-span-4 md:row-span-2",
-  "md:col-span-4",
-  "md:col-span-6",
-  "md:col-span-6",
-];
-
-/** The campaign takeover: first major visual after the hero. */
+/** The campaign takeover: poster-scale type over a full-bleed key visual, a red stats spread, then a film strip. */
 export default function CampaignSection({ campaign: c, index = 0 }: { campaign: Campaign; index?: number }) {
+  // "A Touch of Sashfir" -> small lead-in "A Touch of" + poster word "Sashfir".
+  const lead = c.name.replace(c.partner, "").trim();
+  const [s0, s1, s2, s3] = c.stats ?? [];
+
   return (
     <article id={c.slug} aria-labelledby={`${c.slug}-title`}>
-      {/* Full-bleed key visual */}
-      <div className="relative h-[88svh] min-h-[560px] w-full overflow-hidden bg-sand">
+      {/* 1. Full-bleed key visual with poster type */}
+      <div className="relative h-[100svh] min-h-[620px] w-full overflow-hidden bg-ink">
         {c.keyVisualMobile && (
           <div className="absolute inset-0 sm:hidden">
             <ParallaxImage img={c.keyVisualMobile} priority />
@@ -30,22 +24,25 @@ export default function CampaignSection({ campaign: c, index = 0 }: { campaign: 
         <div className={`absolute inset-0 ${c.keyVisualMobile ? "hidden sm:block" : ""}`}>
           <ParallaxImage img={c.keyVisual} className="object-[50%_35%]" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/5 to-black/25" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" aria-hidden />
 
-        <div className="absolute inset-x-0 top-0 mx-auto flex max-w-[110rem] items-start justify-between px-5 pt-24 text-white md:px-10">
-          <p className="label !text-white/85">Featured collaboration</p>
-          <p className="num text-5xl md:text-7xl">{pad(index + 1)}</p>
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between px-5 pt-24 text-white md:px-10">
+          <p className="label !text-white/85">Featured collaboration · with {c.partner}</p>
+          <p className="num text-5xl md:text-7xl" aria-hidden>
+            {pad(index + 1)}
+          </p>
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[110rem] px-5 pb-10 text-white md:px-10 md:pb-14">
-          <p className="label !text-white/85">In collaboration with {c.partner}</p>
-          <h2 id={`${c.slug}-title`} className="display display-xl mt-3">
-            {c.name}
+        <div className="absolute inset-x-0 bottom-0 px-5 pb-8 text-white md:px-10 md:pb-12">
+          <h2 id={`${c.slug}-title`} className="display">
+            <span className="block text-[clamp(1.6rem,4vw,3.5rem)] font-normal italic leading-none tracking-normal">{lead}</span>
+            {/* Bleeds slightly past the gutter on purpose. */}
+            <span className="display-2xl -ml-[0.04em] block !text-[clamp(4.5rem,26vw,9rem)] md:!text-[clamp(8rem,22vw,26rem)]">
+              {c.partner}
+            </span>
           </h2>
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
-            <p className="display display-md">
-              <em className="!text-white">{c.tagline}</em>
-            </p>
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-6 border-t border-white/40 pt-5">
+            <p className="display text-[clamp(1.4rem,3vw,2.6rem)] italic">{c.tagline}</p>
             <a href={c.href} target="_blank" rel="noopener noreferrer" className="btn btn-white">
               Explore Campaign ↗
             </a>
@@ -53,14 +50,17 @@ export default function CampaignSection({ campaign: c, index = 0 }: { campaign: 
         </div>
       </div>
 
-      {/* Story + numbers */}
-      <div className="mx-auto max-w-7xl px-5 py-20 md:px-10 md:py-28">
-        <div className="grid gap-14 md:grid-cols-12">
-          <Reveal className="md:col-span-5">
-            <p className="text-lg">{c.intro}</p>
-            <p className="label mt-10">The concept</p>
-            <p className="mt-3 text-lg text-mute">{c.concept}</p>
+      {/* 2. Story: a big statement, offset list and an overlapping still */}
+      <div className="relative px-5 py-24 md:px-10 md:py-36">
+        <div className="mx-auto grid max-w-[110rem] gap-14 md:grid-cols-12 md:gap-8">
+          <Reveal className="md:col-span-7">
+            <p className="label">The collaboration</p>
+            <p className="display mt-6 text-[clamp(1.9rem,4.2vw,4rem)] leading-[1.02]">{c.intro}</p>
+          </Reveal>
 
+          <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:mt-40">
+            <p className="label">The concept</p>
+            <p className="mt-3 text-lg text-mute">{c.concept}</p>
             <p className="label mt-10">Featured products</p>
             <ol className="mt-3 divide-y divide-line border-y border-line">
               {c.featuredProducts.map((p, i) => (
@@ -71,35 +71,77 @@ export default function CampaignSection({ campaign: c, index = 0 }: { campaign: 
               ))}
             </ol>
           </Reveal>
-
-          {c.stats && (
-            <Reveal delay={0.1} className="md:col-span-6 md:col-start-7">
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-12">
-                {c.stats.map((s) => (
-                  <div key={s.label} className="min-w-0 border-t border-ink pt-4">
-                    {/* Sized so "300+" always fits its column (it used to spill over the next number). */}
-                    <dt className="num whitespace-nowrap text-[clamp(3.25rem,7.5vw,6.5rem)] text-red">{s.value}</dt>
-                    <dd className="label mt-3 max-w-[14ch] !text-ink">{s.label}</dd>
-                  </div>
-                ))}
-              </dl>
-            </Reveal>
-          )}
         </div>
+      </div>
 
-        {/* Gallery: mosaic on desktop, swipe strip on mobile */}
-        <div className="mt-20 md:hidden">
-          <SwipeGallery images={c.gallery} label={`${c.name} campaign visuals`} />
+      {/* 3. Stats as editorial graphics: huge numerals, mixed solid and outline, overlapping a still */}
+      {s0 && s1 && s2 && s3 && (
+        <div className="relative overflow-hidden bg-red px-5 py-20 text-white md:px-10 md:py-32">
+          <p className="label !text-white/80">By the numbers</p>
+          <dl className="mx-auto mt-10 grid max-w-[110rem] gap-y-14 md:grid-cols-12 md:gap-x-6 md:gap-y-0">
+            <Stat s={s0} className="md:col-span-6" />
+
+            {c.gallery[3] && (
+              <div className="hidden md:col-span-4 md:col-start-9 md:row-span-2 md:block">
+                <div className="crop-white relative aspect-[3/4] w-full">
+                  <Image
+                    src={c.gallery[3].src}
+                    alt={c.gallery[3].alt}
+                    fill
+                    sizes="30vw"
+                    className="object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            )}
+
+            <Stat s={s1} flip className="md:col-span-8 md:col-start-5 md:-mt-52" />
+            <Stat s={s2} outline className="md:col-span-6 md:mt-20" />
+            <Stat s={s3} className="md:col-span-5 md:col-start-8 md:mt-24" />
+          </dl>
         </div>
-        <ul className="mt-20 hidden gap-3 md:grid md:auto-rows-[20vw] md:grid-cols-12 xl:auto-rows-[15.5rem]">
-          {c.gallery.slice(0, mosaic.length).map((img, i) => (
-            <li key={img.src} className={`zoom relative overflow-hidden bg-sand ${mosaic[i]}`}>
-              <Image src={img.src} alt={img.alt} fill sizes="(min-width: 1280px) 33vw, 33vw" className="object-cover" loading="lazy" />
-            </li>
-          ))}
-        </ul>
+      )}
+
+      {/* 4. Film strip */}
+      <div className="bg-ink py-20 text-white md:py-28">
+        <div className="mx-auto mb-10 flex max-w-[110rem] flex-wrap items-end justify-between gap-4 px-5 md:mb-14 md:px-10">
+          <h3 className="display display-lg">
+            Blood &amp; Bold, <em className="!text-red">frame by frame.</em>
+          </h3>
+          <p className="label !text-white/60">Drag, scroll or use the arrows</p>
+        </div>
+        <CampaignReel images={c.gallery} label={`${c.name} campaign visuals`} />
       </div>
     </article>
+  );
+}
+
+function Stat({
+  s,
+  outline = false,
+  flip = false,
+  className = "",
+}: {
+  s: { value: string; label: string };
+  outline?: boolean;
+  /** Label on the left of the numeral (used where the numeral overlaps a photo). */
+  flip?: boolean;
+  className?: string;
+}) {
+  return (
+    <Reveal className={`relative z-10 min-w-0 ${className}`}>
+      <div className={`flex items-end gap-5 md:gap-8 ${flip ? "md:flex-row-reverse md:justify-end" : ""}`}>
+        <dt
+          className={`num whitespace-nowrap text-[clamp(7rem,30vw,10rem)] md:text-[clamp(9rem,19vw,21rem)] ${
+            outline ? "num-outline-white" : ""
+          }`}
+        >
+          {s.value}
+        </dt>
+        <dd className="label mb-3 max-w-[16ch] border-t border-white/60 pt-3 !text-white md:mb-8">{s.label}</dd>
+      </div>
+    </Reveal>
   );
 }
 
