@@ -83,8 +83,8 @@ export const steps = [
 ];
 
 export const contact = {
-  headline: "Have something in mind?",
-  accent: "Let's make it happen.",
+  headline: "Let's make something",
+  accent: "happen.",
   formLabel: "Partnership inquiry form",
   formIntro: "Use this form to send us your proposal. Share a few details and our team will review it.",
   formNote: "Fields marked optional can be skipped.",

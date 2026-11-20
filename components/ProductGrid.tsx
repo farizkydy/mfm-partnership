@@ -53,7 +53,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
   (p, n) => (
     <div className="grid gap-8 md:grid-cols-12 md:gap-6">
       <div className="md:col-span-7">
-        <div className="crop">
+        <div className="chrome-back">
           <Photo img={p.cover} mono={p.mono} className="aspect-[4/5]" sizes="(min-width: 768px) 55vw, 100vw" />
         </div>
       </div>
@@ -65,7 +65,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
         </div>
         {p.cover2 && (
           <div className="mt-10 w-3/4 self-end max-md:ml-auto md:relative md:z-10 md:-ml-40 md:mt-16 md:w-[78%]">
-            <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-paper" sizes="(min-width: 768px) 30vw, 70vw" />
+            <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-[#e9eaee]" sizes="(min-width: 768px) 30vw, 70vw" />
           </div>
         )}
       </div>
@@ -77,7 +77,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
     <div className="relative left-1/2 w-screen -translate-x-1/2">
       <div className="relative h-[78svh] min-h-[520px] overflow-hidden bg-sand">
         <Image src={p.cover.src} alt={p.cover.alt} fill sizes="100vw" className="object-cover object-[50%_32%]" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2b040b]/90 via-[#3a0610]/25 to-black/10" aria-hidden />
         <Num n={n} className="absolute right-5 top-6 text-6xl text-white md:right-10 md:text-8xl" />
         <div className="absolute inset-x-0 bottom-0 px-5 pb-8 text-white md:px-10 md:pb-12">
           <h3 className="display display-xl max-w-[16ch] !text-[clamp(2.6rem,9vw,9rem)]">{p.name}</h3>
@@ -86,7 +86,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
       </div>
       {p.cover2 && (
         <div className="absolute -bottom-14 right-5 hidden w-[19%] md:right-[9%] md:block">
-          <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-paper" sizes="20vw" />
+          <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-[#e9eaee]" sizes="20vw" />
         </div>
       )}
     </div>
@@ -95,7 +95,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
   // 03: typography-led. A slim plate beside a very large name.
   (p, n) => (
     <div className="grid items-end gap-8 md:grid-cols-12 md:gap-6">
-      <div className="max-md:w-3/5 md:col-span-3 md:col-start-1">
+      <div className="chrome-back max-md:w-3/5 md:col-span-3 md:col-start-1">
         <Photo img={p.cover} mono={p.mono} className="aspect-[3/5]" sizes="(min-width: 768px) 25vw, 60vw" />
       </div>
       <div className="md:col-span-9 md:pl-10">
@@ -135,11 +135,11 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
         <h3 className="display display-lg mt-6 md:relative md:z-10 md:-mr-40">{p.name}</h3>
         <Meta p={p} className="mt-6" />
       </div>
-      <div className="relative order-1 md:order-2 md:col-span-8">
+      <div className="chrome-back relative order-1 md:order-2 md:col-span-8">
         <Photo img={p.cover} className="aspect-square" sizes="(min-width: 768px) 62vw, 100vw" />
         {p.cover2 && (
           <div className="absolute -bottom-10 left-[-6%] w-[38%] md:-bottom-16 md:left-[-14%]">
-            <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-paper" sizes="25vw" />
+            <Photo img={p.cover2} className="aspect-[3/4] border-[8px] border-[#e9eaee]" sizes="25vw" />
           </div>
         )}
       </div>
@@ -150,7 +150,7 @@ const spreads: ((p: Product, n: number) => ReactNode)[] = [
   (p, n) => (
     <div className="grid gap-8 md:grid-cols-12 md:gap-6">
       <div className="md:col-span-5">
-        <div className="crop">
+        <div className="chrome-back">
           <Photo img={p.cover} className="aspect-[3/4] md:aspect-[2/3]" sizes="(min-width: 768px) 42vw, 100vw" />
         </div>
       </div>

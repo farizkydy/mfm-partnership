@@ -41,7 +41,7 @@ export const products: Product[] = [
     slug: "pearlfit-cushion",
     name: "Pearlfect Skin-Fit Cushion",
     category: "Face / Complexion",
-    description: "A hi-cover cushion for combination skin, with oil control and a dual-sided puff.",
+    description: "A high-cover cushion for combination skin, with oil control and a dual-sided puff.",
     cover: kv("pearlfit-cushion", 9, "Pearlfect Skin-Fit Cushion campaign visual"),
     cover2: kv("pearlfit-cushion", 4, "Model with a sword in a satin gown, Pearlfect campaign"),
   },
@@ -55,11 +55,11 @@ export const products: Product[] = [
   },
   {
     slug: "skintint",
-    name: "Pearl-Fect Cover Skintint",
+    name: "Pearlfect Cover Skin Tint",
     category: "Face / Complexion",
-    description: "An 8-hour pearlfect cover tint that meets oil control, with skin-barrier care.",
-    cover: kv("skintint", 3, "Pearl-Fect Cover Skintint campaign visual"),
-    cover2: kv("skintint", 2, "Model holding an oyster of pearls, Skintint campaign"),
+    description: "An 8-hour Pearlfect Cover tint with oil control and skin-barrier care.",
+    cover: kv("skintint", 3, "Pearlfect Cover Skin Tint campaign visual"),
+    cover2: kv("skintint", 2, "Model holding an oyster of pearls, Skin Tint campaign"),
   },
   {
     slug: "glass-blush",
@@ -134,3 +134,11 @@ export const ABOUT_IMAGE = kv("silk-fit-concealer", 8, "Model mid-punch in a red
 export const ABOUT_IMAGE_2 = kv("glass-blush", 0, "Model in a blonde curled wig winking, Mad For Makeup campaign");
 export const WHY_IMAGE = kv("glass-oil", 0, "Model hugging a corgi on a tennis court, Mad For Makeup campaign");
 export const WHY_IMAGE_2 = kv("glass-oil", 1, "Model holding a pink tennis ball, Mad For Makeup campaign");
+
+/** Partnership Opportunities: one image per category, same order as `opportunities` in lib/site.ts. */
+export const OPPORTUNITY_IMAGES: Img[] = [
+  kv("pearlfit-cushion", 9, "Pearlfect cushion on a nautilus shell"),
+  kv("silk-fit-concealer", 1, "Model between two red boxing gloves"),
+  kv("glasstick", 1, "Bride on a motorbike in the city"),
+  kv("sashfir", 20, "Sashfir still life: chrome tools and a cup"),
+];

@@ -19,7 +19,7 @@ function Marquee() {
       {ticker.map((t, i) => (
         <span key={t} className="display flex shrink-0 items-center gap-8 pr-8 text-[clamp(2rem,5vw,4.5rem)] italic md:gap-14 md:pr-14">
           {t}
-          <span className="not-italic text-red" aria-hidden>
+          <span className="not-italic text-maroon-mid" aria-hidden>
             ✺
           </span>
         </span>
@@ -27,7 +27,7 @@ function Marquee() {
     </>
   );
   return (
-    <div className="marquee overflow-hidden bg-ink py-4 text-white md:py-6" role="presentation">
+    <div className="marquee field-chrome overflow-hidden py-4 text-maroon md:py-6" role="presentation">
       <div className="marquee-track" aria-hidden>
         {row}
         {row}
@@ -45,7 +45,11 @@ export default function Home() {
       <Header />
       <main id="top">
         {/* Hero: a magazine spread. Red field with poster type, tall campaign photo, a second frame overlapping the seam. */}
-        <section id="hero" className="relative flex flex-col overflow-hidden bg-red text-white md:block md:min-h-[100svh]">
+        <section id="hero" className="field-maroon chrome relative flex flex-col overflow-hidden text-white md:block md:min-h-[100svh]">
+          {/* Liquid-metal accents behind the type */}
+          <div className="chrome-ring pointer-events-none absolute left-[36%] top-[-14rem] hidden h-[34rem] w-[34rem] opacity-50 md:block" aria-hidden />
+          <div className="chrome-orb pointer-events-none absolute left-[41%] top-[24svh] hidden h-16 w-16 md:block" aria-hidden />
+
           {/* Photo column (below the type on mobile) */}
           <div className="relative order-2 mt-10 h-[78svh] md:absolute md:inset-y-0 md:right-0 md:mt-0 md:h-auto md:w-[36%]">
             <Image
@@ -64,7 +68,7 @@ export default function Home() {
             </p>
 
             {/* Second frame: sits on the photo on mobile, straddles the red/photo seam on desktop */}
-            <div className="absolute bottom-6 left-5 z-20 w-[36%] -rotate-[3deg] border-[6px] border-paper shadow-2xl md:bottom-auto md:left-[-27%] md:top-[26svh] md:w-[42%] md:border-8">
+            <div className="chrome-frame absolute bottom-6 left-5 z-20 w-[36%] -rotate-[3deg] md:bottom-auto md:left-[-27%] md:top-[26svh] md:w-[42%] md:!p-2">
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-sand">
                 <Image
                   src={HERO_IMAGE_2.src}
@@ -81,16 +85,20 @@ export default function Home() {
           {/* Type column */}
           <div className="relative z-10 order-1 flex flex-col px-5 pt-24 md:min-h-[100svh] md:w-[68%] md:px-10 md:pb-12 md:pt-28">
             {/* Logo asset is white, which is what we want on the red field. */}
-            <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} priority className="h-auto w-[min(100%,22rem)]" />
+            <div className="flex items-center gap-5">
+              <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} priority className="h-auto w-[min(60%,22rem)]" />
+              <span className="chrome-line hidden flex-1 md:block" aria-hidden />
+              <span className="label hidden !text-white/70 md:block">International Partnership Hub</span>
+            </div>
 
-            <h1 className="display display-2xl mt-10 md:mt-auto">
+            <h1 className="display display-2xl mt-10 md:mt-auto md:!text-[11.4vw]">
               <span className="block">Made</span>
-              <span className="block italic md:ml-[14%]">in</span>
+              <span className="chrome-text block italic md:ml-[14%]">in</span>
               <span className="block">Indonesia.</span>
             </h1>
 
             <div className="mt-8 grid gap-8 md:mt-12 md:grid-cols-[1.1fr_1fr] md:items-end md:gap-10">
-              <p className="display text-[clamp(1.6rem,3vw,2.75rem)] italic leading-[1.05]">{hero.accent}</p>
+              <p className="display chrome-text text-[clamp(1.6rem,3vw,2.75rem)] italic leading-[1.05]">{hero.accent}</p>
               <div>
                 <p className="max-w-md text-base text-white/90 md:max-w-[22rem] md:text-lg">{hero.copy}</p>
                 <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -125,11 +133,11 @@ export default function Home() {
         </section>
 
         {/* About: a poster. Headline blends over the photographs (difference) so it stays legible on any frame. */}
-        <section id="about" className="relative scroll-mt-16 overflow-hidden bg-paper py-24 md:py-40">
+        <section id="about" className="field-chrome relative scroll-mt-16 overflow-hidden py-24 md:py-40">
           <div className="mx-auto max-w-[110rem] px-5 md:px-10">
             <div className="relative md:min-h-[60vw] xl:min-h-[52rem]">
               {/* Main photo, right */}
-              <div className="relative ml-auto aspect-[4/5] w-[78%] md:absolute md:right-0 md:top-0 md:w-[44%]">
+              <div className="chrome-back relative ml-auto aspect-[4/5] w-[78%] md:absolute md:right-5 md:top-0 md:w-[44%]">
                 <Image
                   src={ABOUT_IMAGE.src}
                   alt={ABOUT_IMAGE.alt}
@@ -140,7 +148,7 @@ export default function Home() {
                 />
               </div>
               {/* Second photo, low-left, overlapping */}
-              <div className="relative -mt-24 w-[46%] border-[6px] border-paper md:absolute md:bottom-6 md:left-[8%] md:mt-0 md:w-[22%] md:border-8">
+              <div className="chrome-frame relative -mt-24 w-[46%] md:absolute md:bottom-6 md:left-[8%] md:mt-0 md:w-[22%]">
                 <div className="relative aspect-[3/4] w-full">
                   <Image
                     src={ABOUT_IMAGE_2.src}
@@ -165,7 +173,7 @@ export default function Home() {
 
             <div className="mt-16 grid gap-12 md:-mt-6 md:grid-cols-12 md:gap-8">
               <Reveal className="md:col-span-5 md:col-start-1">
-                <div className="flex items-end gap-4 border-t border-ink pt-4">
+                <div className="flex items-end gap-4 border-t border-maroon pt-4">
                   <span className="num text-[clamp(8rem,18vw,16rem)] text-red">0</span>
                   <span className="label mb-6 !text-ink">Rules.<br />Zero limits.</span>
                 </div>
@@ -183,7 +191,7 @@ export default function Home() {
         </section>
 
         {/* Why partner: dark spread, sticky campaign photo, huge hollow numerals that fill on hover */}
-        <section id="why" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
+        <section id="why" className="field-maroon-deep chrome scroll-mt-16 py-24 text-white md:py-36">
           <div className="mx-auto max-w-[110rem] px-5 md:px-10">
             <Reveal>
               <h2 className="display display-2xl !text-[clamp(3.4rem,13vw,13rem)]">
@@ -203,7 +211,7 @@ export default function Home() {
                     loading="lazy"
                   />
                 </div>
-                <div className="relative -mt-24 ml-auto w-[48%] border-[6px] border-ink md:-mt-32 md:border-8">
+                <div className="chrome-frame relative -mt-24 ml-auto w-[48%] md:-mt-32">
                   <div className="relative aspect-square w-full">
                     <Image
                       src={WHY_IMAGE_2.src}
@@ -219,10 +227,11 @@ export default function Home() {
 
               <ul className="md:col-span-7">
                 {whyPartner.map((w, i) => (
-                  <li key={w.label} className="group border-t border-white/30 py-8 md:py-12">
+                  <li key={w.label} className={`group py-8 md:py-12 ${i % 2 ? "md:pl-[10%]" : ""}`}>
+                    <div className="chrome-line mb-8 md:mb-12" aria-hidden />
                     <Reveal>
                       <div className="grid items-start gap-4 md:grid-cols-[auto_1fr] md:gap-10">
-                        <p className="num num-outline-white text-[clamp(6rem,11vw,10rem)] transition-colors duration-500 group-hover:!text-red group-hover:![-webkit-text-stroke-color:var(--red)]">
+                        <p className="num chrome-text text-[clamp(6rem,11vw,10rem)] transition-transform duration-500 group-hover:-translate-y-1">
                           {w.stat ?? pad(i + 1)}
                         </p>
                         <div className="md:pt-4">
@@ -239,7 +248,7 @@ export default function Home() {
         </section>
 
         {/* Products: six spreads, each composed differently */}
-        <section id="products" className="scroll-mt-16 overflow-x-clip py-24 md:py-36">
+        <section id="products" className="field-chrome scroll-mt-16 overflow-x-clip py-24 md:py-36">
           <div className="mx-auto max-w-[96rem] px-5 md:px-10">
             <Reveal>
               <h2 className="display display-2xl !text-[clamp(3.4rem,13vw,13rem)]">
@@ -254,7 +263,7 @@ export default function Home() {
         </section>
 
         {/* Partnership opportunities: typographic list */}
-        <section id="opportunities" className="scroll-mt-16 bg-ink py-24 text-white md:py-36">
+        <section id="opportunities" className="field-maroon chrome scroll-mt-16 py-24 text-white md:py-36">
           <div className="mx-auto max-w-[110rem] px-5 md:px-10">
             <Reveal>
               <h2 className="display display-2xl !text-[clamp(3.2rem,12vw,12rem)]">
@@ -288,10 +297,10 @@ export default function Home() {
         </section>
 
         {/* Contact: full red band */}
-        <section id="collab" className="scroll-mt-16 bg-red py-12 text-white md:py-14">
+        <section id="collab" className="field-maroon chrome scroll-mt-16 py-12 text-white md:py-14">
           <div className={`${wrap} grid gap-14 md:grid-cols-12 md:gap-8`}>
             <Reveal className="md:col-span-6">
-              <h2 className="display display-lg [&_em]:!text-white">
+              <h2 className="display display-lg">
                 {contact.headline} <em>{contact.accent}</em>
               </h2>
               <p className="mt-8 max-w-md text-lg text-white/85">
@@ -329,7 +338,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="bg-ink px-5 py-16 text-white md:px-10">
+      <footer className="field-maroon-deep px-5 py-16 text-white md:px-10">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
             <Image src="/logo.png" alt="Mad For Makeup" width={1400} height={105} className="h-4 w-auto md:h-5" />
@@ -347,7 +356,7 @@ export default function Home() {
           </nav>
           <div>
             <p className="label !text-white/70">Partnership contact</p>
-            <a href={`mailto:${EMAIL}`} className="mt-3 block hover:text-red">
+            <a href={`mailto:${EMAIL}`} className="mt-3 block hover:text-[#c9cad1]">
               {EMAIL}
             </a>
           </div>

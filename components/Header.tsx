@@ -59,7 +59,7 @@ export default function Header() {
 
         <nav aria-label="Primary" className="ml-auto hidden items-center gap-6 lg:flex">
           {nav.slice(1).map((l) => (
-            <a key={l.href} href={l.href} className={`label ${scrolled ? "!text-ink hover:!text-red" : "!text-white hover:!text-ink"}`}>
+            <a key={l.href} href={l.href} className={`label ${scrolled ? "!text-ink hover:!text-maroon-mid" : "!text-white hover:!text-ink"}`}>
               {l.label}
             </a>
           ))}
@@ -88,7 +88,7 @@ export default function Header() {
           <motion.nav
             id="menu-overlay"
             aria-label="Sections"
-            className="fixed inset-0 z-30 flex flex-col justify-center bg-ink px-5 text-white lg:hidden"
+            className="fixed inset-0 z-30 flex flex-col justify-center field-maroon-deep px-5 text-white lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

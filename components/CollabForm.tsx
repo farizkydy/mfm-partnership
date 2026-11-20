@@ -133,7 +133,7 @@ export default function CollabForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="btn btn-ink disabled:opacity-60"
+          className="btn btn-red disabled:opacity-60"
         >
           {status === "sending" ? "Sending…" : "Submit Your Proposal"}
         </button>

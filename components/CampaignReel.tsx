@@ -110,13 +110,13 @@ export default function CampaignReel({ images, label }: { images: Img[]; label: 
           {pad(index + 1)} / {pad(images.length)}
         </span>
         <div className="relative h-px flex-1 bg-white/25" aria-hidden>
-          <div className="absolute inset-y-[-1px] left-0 h-[3px] bg-red" style={{ width: `${Math.max(6, progress * 100)}%` }} />
+          <div className="absolute inset-y-[-1px] left-0 h-[3px]" style={{ width: `${Math.max(6, progress * 100)}%`, background: "var(--chrome-grad)" }} />
         </div>
         <div className="flex gap-5">
-          <button onClick={() => go(index - 1)} className="label !text-white hover:!text-red" aria-label="Previous frame">
+          <button onClick={() => go(index - 1)} className="label !text-white hover:!text-[#c9cad1]" aria-label="Previous frame">
             ← Prev
           </button>
-          <button onClick={() => go(index + 1)} className="label !text-white hover:!text-red" aria-label="Next frame">
+          <button onClick={() => go(index + 1)} className="label !text-white hover:!text-[#c9cad1]" aria-label="Next frame">
             Next →
           </button>
         </div>
